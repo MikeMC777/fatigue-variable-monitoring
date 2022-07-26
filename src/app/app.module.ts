@@ -26,6 +26,7 @@ import { FileReadingComponent } from './components/file-reading/file-reading.com
 import { HomeComponent } from './components/home/home.component';
 import { ErrorComponent } from './components/error/error.component';
 import { ReportComponent } from './components/report/report.component';
+import { HeaderMobileMenuComponent } from './components/header-mobile-menu/header-mobile-menu.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { ReportComponent } from './components/report/report.component';
     FileReadingComponent,
     HomeComponent,
     ErrorComponent,
-    ReportComponent
+    ReportComponent,
+    HeaderMobileMenuComponent
   ],
   imports: [
     BrowserModule,

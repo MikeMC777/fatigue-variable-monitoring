@@ -1,0 +1,29 @@
+/**
+ * These are the variables used throughout the application. This is where
+ * overwrites that are not specific to components should be maintained.
+ */
+
+/**
+ * Typography-related.
+ */
+
+ $sansFontFamily: 'Tangerine','Roboto', sans-serif;
+
+ //Spaces (PADDINGS and MARGINS)
+
+ $space-x : 15px;
+ $space-ss: 20px;
+ $space-s : 30px;
+ $space-m : 60px;
+ $space-l : 90px;
+
+ $max-large-modal-video : 840px;
+
+$gray: #A7A2A0;
+$gray-light: #E2E3DD;
+$gray-dark: #4A4847;
+$gray-semi-dark: #4A4A4A;
+$white: #fff;
+$black: #000;
+$red: #D3422F;
+
