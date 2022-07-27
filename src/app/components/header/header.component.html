@@ -27,15 +27,14 @@
                               <div class="d-flex menu col-12 px-0 row text-center justify-content-center">
                                   <div class="col-auto"><a mat-button class="btn btn-default btn-xs btn-name link-btn px-0" routerLink="/">
                                   HOME</a></div>
-                                  <div class="dropdown show col-auto"><a mat-button class="btn btn-default btn-xs btn-name link-btn px-0 dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    CONFIGURACIÓN</a>
-
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                  <div class="col-auto">
+                                    <a mat-button [matMenuTriggerFor]="dropdownMenuLink" class="btn btn-default btn-xs btn-name link-btn px-0">CONFIGURACIÓN</a>
+                                    <mat-menu #dropdownMenuLink="matMenu" xPosition="before" class="header-setting-dropdown">
                                       <a class="dropdown-item" routerLink="employees">Empleados</a>
                                       <a class="dropdown-item" routerLink="devices">Dispositivos</a>
                                       <a class="dropdown-item" routerLink="variables">Variables</a>
                                       <a class="dropdown-item" routerLink="templates">Plantillas</a>
-                                    </div>
+                                    </mat-menu>
                                   </div>
                                   <div class="col-auto"><a mat-button class="btn btn-default btn-xs btn-name link-btn px-0" routerLink="file-reading">
                                   CONSULTAR ARCHIVO</a></div>
@@ -45,14 +44,13 @@
                           </div>
                       </div>
                       <div class="d-none d-md-flex col-md-2 col-lg-2 justify-content-end align-items-center">
-                        <li class="dropdown">
-                          <a mat-button class href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuario <span class="caret"></span></a>
-                          <ul class="dropdown-menu">
-                            <li><a routerLink="my-profile">Perfil</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a routerLink="logout">Cerrar sesión</a></li>
-                          </ul>
-                        </li>
+                        <div class="col-auto">
+                          <a mat-button [matMenuTriggerFor]="dropdownUser" class="btn btn-default btn-xs btn-name link-btn px-0">Usuario</a>
+                          <mat-menu #dropdownUser="matMenu" xPosition="before" class="header-setting-dropdown">
+                            <a class="dropdown-item" routerLink="my-profile">Perfil</a>
+                            <a class="dropdown-item" routerLink="logout">Cerrar sesión</a>
+                          </mat-menu>
+                        </div>
                       </div>
                   </div>
               </div>

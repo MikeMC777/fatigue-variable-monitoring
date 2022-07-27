@@ -1,6 +1,6 @@
 
 @import "src/styles/variables";
-::ng-deep .header-language-dropdown {
+::ng-deep .header-setting-dropdown {
 
   &.mat-menu-panel { min-height: auto };
   background-color: #4A4847;
@@ -8,12 +8,11 @@
 
   a {
     color: $white;
-    padding: 3px 0px 0px;
+    padding: 5px 15px;
     height: 100%;
     text-align: left;
-    padding-left: 8px;
-    font-size: 12px;
-    line-height: 20px;
+    font-size: 14px;
+    line-height: 25px;
     text-transform: capitalize;
 
     &:focus {
@@ -657,7 +656,7 @@
           }
         }
       }
-      .btn-name, .btn-language {
+      .btn-name {
         font-family: 'Montserrat', sans-serif;
         font-weight: 100;
         font-style: normal;
@@ -667,7 +666,6 @@
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
         border-radius: 0;
         &:hover, &:focus {
-            background-color: rgba(0,0,0,0.40);
             color: rgb(255, 255, 255);
             box-shadow: none;
             font-weight: 600;
