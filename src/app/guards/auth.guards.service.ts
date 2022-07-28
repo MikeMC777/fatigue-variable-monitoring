@@ -11,8 +11,6 @@ export class AuthGuard implements CanActivate {
 
   }
   canActivate() {
-
-    return true;
     if (this.authService.getCurrentUser()) {
       // El usuario está autenticado
       return true;
@@ -21,7 +19,5 @@ export class AuthGuard implements CanActivate {
       this.router.navigate(['/login']);
       return false;
     }
-
   }
-
 }

@@ -1,4 +1,17 @@
-<fvm-header></fvm-header>
-<ngb-toast-container></ngb-toast-container>
-<router-outlet></router-outlet>
-<fvm-footer></fvm-footer>
+<ng-container *ngIf="router.url === '/login'; then viewLogin; else viewComplete">
+</ng-container>
+
+<ng-template #viewLogin>
+    <div class="all-page">
+        <ngb-toast-container></ngb-toast-container>
+        <router-outlet></router-outlet>
+    </div>
+</ng-template>
+<ng-template #viewComplete>
+    <div id="wrapper">
+      <fvm-header></fvm-header>
+      <ngb-toast-container></ngb-toast-container>
+      <router-outlet></router-outlet>
+      <fvm-footer></fvm-footer>
+    </div>
+</ng-template>

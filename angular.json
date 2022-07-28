@@ -39,7 +39,9 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/crypto-js/crypto-js.js"
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/crypto-js/crypto-js.js",
+              "src/app/js/showHidePassword.js"
             ]
           },
           "configurations": {

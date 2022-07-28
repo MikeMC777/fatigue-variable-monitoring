@@ -1,1 +1,39 @@
-<p>login works!</p>
+<div class="bg-white border loginColumns  animated fadeInDown w-100">
+  <div class="row m-0 py-4 px-0">
+      <div class="col-md-4 m-0 p-0 align-self-center text-center">
+          <img class=" justify-content-center" src="../../../assets/logo.png" style="height: 220px; width: 200px;">
+      </div>
+      <div class="col-md-8 border-left px-0 px-md-4">
+          <div class="border m-l-lg m-r-lg m-t-lg m-b-md pb-3">
+              <form onkeydown="return event.key != 'Enter'" [formGroup]="signUpForm">
+                  <div class="form-group row m-2 m-md-4">
+                      <label class="col-12 col-md-3 col-form-label">Usuario</label>
+                      <div class="col-12 col-md-9">
+                          <input formControlName="name" id="nameLogin" type="email" placeholder="Introduzca el nombre de usuario" class="form-control font-weight-light border-left-0 border-right-0 border-top-1" autocomplete="off">
+                      </div>
+                  </div>
+                  <div class="form-group row m-2 m-md-4 input-group-prepend">
+                      <label class="col-12 col-md-3 col-form-label">Contraseña</label>
+                      <div class="col-12 col-md-9">
+                        <div class="input-group" id="show_hide_password">
+                          <input formControlName="password" id="passwordLogin" type="password" placeholder="Introduzca la contraseña" class="form-control font-weight-light border-left-0 border-right-0 border-top-1" autocomplete="off">
+                          <a class="input-group-addon border-left-0 border-right-0 border-top-1"><i class="fa fa-eye"></i></a>
+                        </div>
+                      </div>
+                  </div>
+              </form>
+          </div>
+          <div class="m-b-md button-container">
+              <div class="pt-4 px-4 px-md-0">
+                  <button type="submit" [disabled]="signUpForm.invalid" (click)="showWelcomeMessage(signUpForm.value)" class="btn btn-outline-secondary float-right m-t-n-xs m-l m-r-lg mensaje"><i class="fa fa-check" aria-hidden="true"></i><strong>Ingresar</strong></button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="col-12 p-2 m-0 bg-secondary text-white ml-0 mr-0 row">
+      <div class="col-12">
+          <small>Desarrollado por: Michael Mejia</small>
+      </div>
+  </div>
+</div>
+
