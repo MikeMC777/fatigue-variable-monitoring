@@ -1,1 +1,82 @@
-<p>breadcrumb works!</p>
+<div class="row wrapper border-bottom white-bg justify-content-center">
+  <div class="row breadcrumb-wrapper">
+    <ng-container *ngIf="router.url === '/'; then indexBreadCrumb">
+    </ng-container>
+
+    <!--Empleados-->
+    <ng-container *ngIf="router.url === '/employees'; then employeeBreadCrumb">
+    </ng-container>
+    <ng-container *ngIf="router.url === '/form-employee'; then employeeFormBreadCrumb">
+    </ng-container>
+    <ng-container *ngIf="router.url.substring(0, 14) === '/edit-employee'; then employeeEditBreadCrumb">
+    </ng-container>
+  </div>
+
+  <!--Formas de pago-->
+</div>
+<ng-template #indexBreadCrumb>
+  <div class="col-12 col-md-6">
+      <h2 class="my-2">Home</h2>
+  </div>
+  <div class="col-12 col-md-6 align-self-center d-flex justify-content-md-end">
+      <ol class="breadcrumb my-auto">
+          <li class="breadcrumb-item active" aria-current="page">
+              <strong>Home</strong>
+          </li>
+      </ol>
+  </div>
+</ng-template>
+
+<ng-template #employeeBreadCrumb>
+  <div class="col-12 col-md-6">
+      <h2 class="my-2">Empleados</h2>
+  </div>
+  <div class="col-12 col-md-6 align-self-center d-flex justify-content-md-end">
+      <ol class="breadcrumb my-auto">
+          <li class="breadcrumb-item">
+              <a routerLink="/">Home</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+              <strong>Lista de empleados</strong>
+          </li>
+      </ol>
+  </div>
+</ng-template>
+
+<ng-template #employeeEditBreadCrumb>
+  <div class="col-12 col-md-6">
+      <h2 class="my-2">Empleado No. {{ id }}</h2>
+  </div>
+  <div class="col-12 col-md-6 align-self-center d-flex justify-content-md-end">
+      <ol class="breadcrumb my-auto">
+          <li class="breadcrumb-item">
+              <a routerLink="/">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+              <a routerLink="/employees">Lista de empleados</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+              <strong>Editar empleado</strong>
+          </li>
+      </ol>
+  </div>
+</ng-template>
+
+<ng-template #employeeFormBreadCrumb>
+  <div class="col-12 col-md-6">
+      <h2 class="my-2">Empleado</h2>
+  </div>
+  <div class="col-12 col-md-6 align-self-center d-flex justify-content-md-end">
+      <ol class="breadcrumb my-auto">
+          <li class="breadcrumb-item">
+              <a routerLink="/">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+              <a routerLink="/employees">Lista de empleados</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+              <strong>Nuevo empleado</strong>
+          </li>
+      </ol>
+  </div>
+</ng-template>

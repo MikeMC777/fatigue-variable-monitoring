@@ -1,0 +1,56 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs/internal/Observable';
+import { map } from 'rxjs/operators';
+import { EmployeeI } from '../models/employee';
+import { environment } from './../../environments/environment';
+import { AuthService } from './auth.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CrudEmployeeService {
+
+  constructor(private httpClient: HttpClient, private authService: AuthService) { }
+
+  headers: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'x-access-token': this.authService.getToken() || ''
+  });
+
+  loadEmployees(): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/employee/get`;
+    return this.httpClient
+    .get(urlApi, {headers: this.headers})
+    .pipe(map(data => data));
+  }
+
+  loadEmployee(params: HttpParams): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/employee/get/id`;
+    return this.httpClient
+    .get(urlApi, {params, headers: this.headers})
+    .pipe(map(data => data));
+  }
+
+  createEmployee(newEmployee: EmployeeI): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/employee/post`;
+    return this.httpClient
+    .post(urlApi, newEmployee, {headers: this.headers})
+    .pipe(map(data => data));
+  }
+
+  updateEmployee(selectedEmployee: EmployeeI): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/employee/put/id`;
+    return this.httpClient
+    .put(urlApi, selectedEmployee, {headers: this.headers})
+    .pipe(map(data => data));
+  }
+
+  deleteEmployee(_uuid: string): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/employee/delete/id`;
+    return this.httpClient
+    .request('delete', urlApi, {body: {_uuid}, headers: this.headers})
+    .pipe(map(data => data));
+  }
+
+}

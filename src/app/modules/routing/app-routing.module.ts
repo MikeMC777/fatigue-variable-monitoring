@@ -22,7 +22,7 @@ const routes: Routes = [
   /*Se agregan las rutas de empleados */
   { path: 'employees', component: EmployeesListComponent, canActivate: [AuthGuard]},
   { path: 'form-employee', component: EmployeeFormComponent, canActivate: [AuthGuard]},
-  { path: 'edit-employee', component: EmployeeFormComponent, canActivate: [AuthGuard]},
+  { path: 'edit-employee/:id', component: EmployeeFormComponent, canActivate: [AuthGuard]},
   /*Se agregan las rutas de dispositivos */
   { path: 'devices', component: DevicesListComponent, canActivate: [AuthGuard]},
   { path: 'form-device', component: DeviceFormComponent, canActivate: [AuthGuard]},

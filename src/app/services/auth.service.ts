@@ -21,7 +21,7 @@ export class AuthService {
 
 
   loginUser(login: string): Observable<any> {
-    const urlApi = `${environment.apiUrl}/api/post/validar-usuario`;
+    const urlApi = `${environment.apiUrl}/api/user/post/login`;
     return this.httpClient
     .post(urlApi, {login}, {headers: this.headers})
     .pipe(map(data => data));
@@ -65,7 +65,7 @@ export class AuthService {
       const toast: NgbToast = {
         toastType:  NgbToastType.Danger,
         text:  "Token ha expirado. Inicie sesión nuevamente.",
-        dismissible:  true,
+        dismissible:  true
       }
       this.toastService.show(toast);
       this.logOutUser();

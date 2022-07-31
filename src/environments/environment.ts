@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://weblink.es:4000',
+  apiUrl: 'http://localhost:3000',
   secretkey: 'mZNwNeoa6A7b',
 };
 

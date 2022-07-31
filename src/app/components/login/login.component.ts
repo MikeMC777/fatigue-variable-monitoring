@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   };
   signUpForm!: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router, private builder: FormBuilder) {}
+  constructor(private _authService: AuthService, private router: Router, private builder: FormBuilder) {}
 
   ngOnInit() {
     this.signUpForm = this.builder.group({
@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
 
   showWelcomeMessage(data: any) {
     Swal.fire({
-      title: 'Confirmado',
+      title: 'Autenticando...',
       onBeforeOpen: () => {
         Swal.showLoading();
         return this.onLogin(data);
@@ -50,15 +50,16 @@ export class LoginComponent implements OnInit {
     this.user.nombre = infoUser.name;
     this.user.password = infoUser.password;
     const filterUser = CryptoJS.AES.encrypt(JSON.stringify(this.user), `${environment.secretkey}`).toString();
-    return this.authService.loginUser(filterUser)
+    return this._authService.loginUser(filterUser)
     .subscribe(data => {
       if (data.success) {
-        this.authService.setUser(data.result[0]);
-        this.authService.setToken(data.token);
+        console.log('data56', data);
+        this._authService.setUser(data.result);
+        this._authService.setToken(data.token);
         Swal.fire({
           type: 'success',
-          title: `Bienvenido, ${data.result[0].NOMBRE}` ,
-          confirmButtonText: 'Ingresar a la plataforma',
+          title: `Bienvenido(a), ${data.result.name}` ,
+          confirmButtonText: 'Aceptar',
           onClose: () => {
             location.href = '';
           }
@@ -66,15 +67,17 @@ export class LoginComponent implements OnInit {
       } else {
         Swal.fire({
           type: 'error',
-          title: 'Usuario y/o contraseña equivocados',
+          title: 'Usuario y/o contraseña incorrectos',
           confirmButtonText: 'Intenta nuevamente'
         });
       }
     },
-    error => Swal.fire({
-      type: 'error',
-      title: 'Error de conexión'
-    }));
+    error =>
+      Swal.fire({
+        type: 'error',
+        title: 'Error de conexión'
+      })
+    )
   }
 }
 
