@@ -11,10 +11,6 @@ export class HeaderComponent implements OnInit {
 
   routerConfig: any = {};
   currentUrl: string = '';
-  usPhoneInternational = CommonConstants.USOfficePhoneInt;
-  usPhoneText = CommonConstants.USOfficePhone;
-  crPhoneInternational = CommonConstants.CROfficePhoneInt;
-  crPhoneText = CommonConstants.CROfficePhone;
 
   constructor(private _router: Router) {
     this._router.events.subscribe(val => {

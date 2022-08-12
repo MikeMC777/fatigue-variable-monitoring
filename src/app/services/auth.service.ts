@@ -1,3 +1,4 @@
+import { CommonConstants } from 'src/app/constants/common-constants';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
@@ -60,11 +61,10 @@ export class AuthService {
   }
   //Obtener error en Token
   getErrorToken(error: any) {
-    console.error('Error', error);
     if (error.error.message === 'TokenExpiredError') {
       const toast: NgbToast = {
         toastType:  NgbToastType.Danger,
-        text:  "Token ha expirado. Inicie sesión nuevamente.",
+        text:  CommonConstants.TOKEN_ERROR_MESSAGE,
         dismissible:  true
       }
       this.toastService.show(toast);
@@ -72,7 +72,7 @@ export class AuthService {
     } else {
       Swal.fire({
         type: 'error',
-        title: 'Problemas con la conexión'
+        title: CommonConstants.CONNECTION_ERROR_MESSAGE
       });
     }
   }
@@ -81,15 +81,14 @@ export class AuthService {
     Swal.fire({
       type: 'error',
       title: 'Imposible el acceso',
-      text: 'Error intentando acceder a la base de datos'
+      text: CommonConstants.DATA_BASE_CONNECTION_ERROR_MESSAGE
     });
   }
   //Obtener error procceso fallido
   getErrorProccess(data: any){
-    console.log('Error proceso ', data);
      Swal.fire({
       type: 'error',
-      title: 'Proceso fallido',
+      title: CommonConstants.FAILED_PROCESS_ERROR_TITLE,
       text: data.result
      });
   }

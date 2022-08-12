@@ -26,7 +26,7 @@ export class CrudEmployeeService {
   }
 
   loadEmployee(params: HttpParams): Observable<any> {
-    const urlApi = `${environment.apiUrl}/api/employee/get/id`;
+    const urlApi = `${environment.apiUrl}/api/employee/get/${params.get('id')}`;
     return this.httpClient
     .get(urlApi, {params, headers: this.headers})
     .pipe(map(data => data));
@@ -40,16 +40,16 @@ export class CrudEmployeeService {
   }
 
   updateEmployee(selectedEmployee: EmployeeI): Observable<any> {
-    const urlApi = `${environment.apiUrl}/api/employee/put/id`;
+    const urlApi = `${environment.apiUrl}/api/employee/put/${selectedEmployee._uuid}`;
     return this.httpClient
     .put(urlApi, selectedEmployee, {headers: this.headers})
     .pipe(map(data => data));
   }
 
-  deleteEmployee(_uuid: string): Observable<any> {
-    const urlApi = `${environment.apiUrl}/api/employee/delete/id`;
+  deleteEmployee(params: HttpParams): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/employee/delete/${params.get('id')}`;
     return this.httpClient
-    .request('delete', urlApi, {body: {_uuid}, headers: this.headers})
+    .delete(urlApi, {headers: this.headers, params})
     .pipe(map(data => data));
   }
 

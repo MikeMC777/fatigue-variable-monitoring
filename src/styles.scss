@@ -14,8 +14,8 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$lx-fe-primary: mat-palette($mat-indigo);
-$lx-fe-accent: mat-palette($mat-pink, A200, A100, A400);
+$lx-fe-primary: mat-palette($mat-purple);
+$lx-fe-accent: mat-palette($mat-purple, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
 $lx-fe-warn: mat-palette($mat-red);
@@ -38,4 +38,16 @@ $lx-fe-theme: mat-light-theme((
 /* You can add global styles to this file, and also import other style files */
 @import './styles/variables.scss';
 
-html, body { height: 100%; }
+html, body {
+  height: 100%;
+  .bg-gray {
+    background-color: #e0e1e7;
+  }
+
+  .form-wrapper {
+    max-width: 1300px;
+  }
+  .button-container {
+    text-align: end;
+  }
+}

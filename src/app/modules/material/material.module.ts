@@ -22,6 +22,9 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatSortModule } from '@angular/material/sort';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [],
@@ -48,7 +51,10 @@ import { MatRadioModule } from '@angular/material/radio';
     MatCheckboxModule,
     MatChipsModule,
     MatRadioModule,
-    MatTableModule
+    MatTableModule,
+    MatSortModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   exports: [
     MatMenuModule,
@@ -73,7 +79,10 @@ import { MatRadioModule } from '@angular/material/radio';
     MatCheckboxModule,
     MatChipsModule,
     MatRadioModule,
-    MatTableModule
+    MatTableModule,
+    MatSortModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
 export class MaterialModule { }
