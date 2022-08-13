@@ -85,7 +85,7 @@ export class EmployeesListComponent implements OnInit, AfterViewInit {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id ? + 1 : 1}`;
   }
 
   /** Announce the change in sort state for assistive technology. */

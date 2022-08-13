@@ -65,7 +65,8 @@ export class AuthService {
       const toast: NgbToast = {
         toastType:  NgbToastType.Danger,
         text:  CommonConstants.TOKEN_ERROR_MESSAGE,
-        dismissible:  true
+        dismissible:  true,
+        timeInSeconds: 5
       }
       this.toastService.show(toast);
       this.logOutUser();
