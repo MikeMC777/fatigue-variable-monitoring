@@ -29,7 +29,7 @@
           </div>
           <div class="row pb-0 pb-md-2 mx-0 px-0">
             <div class="col-12 col-md-3 mb-3 text-truncate">
-              <label class="mb-1" for="documentTypeSelect">Tipo de documento</label>
+              <label class="mb-1" for="documentTypeSelect" matTooltip="Tipo de documento" matTooltipPosition="right">Tipo de documento</label>
               <select formControlName="document_type" class="form-control" id="documentTypeSelect" style="height: 2.2rem;">
                 <option value="CC">Cédula de ciudadanía</option>
                 <option value="TI">Tarjeta de identidad</option>
@@ -39,7 +39,7 @@
               </select>
             </div>
             <div class="col-12 col-md-3 form-group-feedback text-truncate">
-              <label class="mb-1" for="documentContent">Documento</label>
+              <label class="mb-1" for="documentContent" matTooltip="Documento" matTooltipPosition="right">Documento</label>
               <ng-container *ngIf="router.url === '/form-employee'; then createDocument else editDocument">
               </ng-container>
               <ng-template #createDocument>
@@ -56,7 +56,7 @@
               </ng-template>
             </div>
             <div class="col-12 col-md-3 form-group-feedback text-truncate">
-              <label class="mb-1" for="positionContent" matTooltip="Segundo Apellido" matTooltipPosition="right">Cargo</label>
+              <label class="mb-1" for="positionContent" matTooltip="Cargo" matTooltipPosition="right">Cargo</label>
               <small class="text-danger" *ngIf="position.hasError('maxlength')">Máximo 100 caracteres</small>
               <input formControlName="position" autocomplete="off" type="text" aria-describedby="positionContentHelp" class="form-control" id="positionContent" placeholder="Ingrese segundo nombre">
             </div>

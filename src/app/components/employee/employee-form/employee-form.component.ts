@@ -39,7 +39,6 @@ export class EmployeeFormComponent implements OnInit {
   validDocument = true;
   typing = false;
   loaded = false;
-  codes: string[] = [];
   router: Router
 
   constructor(_router: Router, private _idSender: IdSenderService, private _authService: AuthService,

@@ -8,7 +8,21 @@
     </ng-container>
     <ng-container *ngIf="router.url === '/form-employee'; then employeeFormBreadCrumb">
     </ng-container>
-    <ng-container *ngIf="router.url.substring(0, 14) === '/edit-employee'; then employeeEditBreadCrumb">
+    <ng-container *ngIf="router.url === '/edit-employee'; then employeeEditBreadCrumb">
+    </ng-container>
+    <!--Dispositivos-->
+    <ng-container *ngIf="router.url === '/devices'; then deviceBreadCrumb">
+    </ng-container>
+    <ng-container *ngIf="router.url === '/form-device'; then deviceFormBreadCrumb">
+    </ng-container>
+    <ng-container *ngIf="router.url === '/edit-device'; then deviceEditBreadCrumb">
+    </ng-container>
+    <!--Variables-->
+    <ng-container *ngIf="router.url === '/variables'; then variableBreadCrumb">
+    </ng-container>
+    <ng-container *ngIf="router.url === '/form-variable'; then variableFormBreadCrumb">
+    </ng-container>
+    <ng-container *ngIf="router.url === '/edit-variable'; then variableEditBreadCrumb">
     </ng-container>
   </div>
 
@@ -76,6 +90,114 @@
           </li>
           <li class="breadcrumb-item active" aria-current="page">
               <strong>Nuevo empleado</strong>
+          </li>
+      </ol>
+  </div>
+</ng-template>
+
+<ng-template #deviceBreadCrumb>
+  <div class="col-12 col-md-6">
+      <h2 class="my-2">Dispositivos</h2>
+  </div>
+  <div class="col-12 col-md-6 align-self-center d-flex justify-content-md-end">
+      <ol class="breadcrumb my-auto">
+          <li class="breadcrumb-item">
+              <a routerLink="/">Home</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+              <strong>Lista de dispositivos</strong>
+          </li>
+      </ol>
+  </div>
+</ng-template>
+
+<ng-template #deviceEditBreadCrumb>
+  <div class="col-12 col-md-6">
+      <h2 class="my-2">Dispositivo No. {{ id }}</h2>
+  </div>
+  <div class="col-12 col-md-6 align-self-center d-flex justify-content-md-end">
+      <ol class="breadcrumb my-auto">
+          <li class="breadcrumb-item">
+              <a routerLink="/">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+              <a routerLink="/devices">Lista de dispositivos</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+              <strong>Editar dispositivo</strong>
+          </li>
+      </ol>
+  </div>
+</ng-template>
+
+<ng-template #deviceFormBreadCrumb>
+  <div class="col-12 col-md-6">
+      <h2 class="my-2">Dispositivo</h2>
+  </div>
+  <div class="col-12 col-md-6 align-self-center d-flex justify-content-md-end">
+      <ol class="breadcrumb my-auto">
+          <li class="breadcrumb-item">
+              <a routerLink="/">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+              <a routerLink="/devices">Lista de dispositivos</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+              <strong>Nuevo dispositivo</strong>
+          </li>
+      </ol>
+  </div>
+</ng-template>
+
+<ng-template #variableBreadCrumb>
+  <div class="col-12 col-md-6">
+      <h2 class="my-2">Variables</h2>
+  </div>
+  <div class="col-12 col-md-6 align-self-center d-flex justify-content-md-end">
+      <ol class="breadcrumb my-auto">
+          <li class="breadcrumb-item">
+              <a routerLink="/">Home</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+              <strong>Lista de variables</strong>
+          </li>
+      </ol>
+  </div>
+</ng-template>
+
+<ng-template #variableEditBreadCrumb>
+  <div class="col-12 col-md-6">
+      <h2 class="my-2">Variable No. {{ id }}</h2>
+  </div>
+  <div class="col-12 col-md-6 align-self-center d-flex justify-content-md-end">
+      <ol class="breadcrumb my-auto">
+          <li class="breadcrumb-item">
+              <a routerLink="/">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+              <a routerLink="/variables">Lista de variables</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+              <strong>Editar variable</strong>
+          </li>
+      </ol>
+  </div>
+</ng-template>
+
+<ng-template #variableFormBreadCrumb>
+  <div class="col-12 col-md-6">
+      <h2 class="my-2">Variable</h2>
+  </div>
+  <div class="col-12 col-md-6 align-self-center d-flex justify-content-md-end">
+      <ol class="breadcrumb my-auto">
+          <li class="breadcrumb-item">
+              <a routerLink="/">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+              <a routerLink="/variables">Lista de variables</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+              <strong>Nueva variable</strong>
           </li>
       </ol>
   </div>
