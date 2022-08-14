@@ -5,7 +5,7 @@
         <div class="col-12 row">
           <div class="row pb-0 pb-md-4 mx-0 px-0">
             <div class="col-12 col-md-3 form-group-feedback text-truncate">
-              <label class="mb-1" for="referenceContent">Referencia</label>
+              <label class="mb-1" for="referenceContent" matTooltip="Referencia" matTooltipPosition="right">Referencia</label>
               <ng-container *ngIf="router.url === '/form-device'; then createReference else editReference">
               </ng-container>
               <ng-template #createReference>
@@ -15,7 +15,7 @@
                 <input autocomplete="off" id="referenceContent" type="text" (keydown)="onTyping($event)"
                   (change)="validateReference()" formControlName="reference" aria-describedby="referenceHelp"
                   class="form-control" [ngClass]="!validReference && reference.touched ? 'border-danger' : ''"
-                  placeholder="Ingrese No. referencia">
+                  placeholder="Ingrese referencia única">
               </ng-template>
               <ng-template #editReference>
                 <input autocomplete="off" type="text" formControlName="reference" class="form-control" id="referenceContent" readonly>
@@ -39,7 +39,7 @@
           </div>
           <div class="row pb-0 pb-md-4 mx-0 px-0">
             <div class="col-12 form-group-feedback text-truncate">
-              <label class="mb-1" for="descriptionContent" matTooltip="Segundo Apellido" matTooltipPosition="right">Descripción</label>
+              <label class="mb-1" for="descriptionContent" matTooltip="Descripción" matTooltipPosition="right">Descripción</label>
               <small class="text-danger" *ngIf="description.hasError('maxlength')">Máximo 250 caracteres</small>
               <textarea formControlName="description" autocomplete="off" type="text" aria-describedby="descriptionContentHelp" class="form-control" id="descriptionContent" placeholder="Ingrese la descripción"></textarea>
             </div>

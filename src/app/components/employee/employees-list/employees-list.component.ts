@@ -22,7 +22,7 @@ import { CommonConstants } from 'src/app/constants/common-constants';
 export class EmployeesListComponent implements OnInit, AfterViewInit {
 
   employeesList: Array<EmployeeI> = [];
-  displayedColumns: string[] = ['select', 'id', 'name', 'position', 'email', 'weight', 'height'];
+  displayedColumns: string[] = ['select', 'id', 'name', 'age', 'position', 'email', 'weight', 'height'];
   dataSource = new MatTableDataSource<EmployeeI>([]);
   selection = new SelectionModel<EmployeeI>(true, []);
   @ViewChild(MatSort) sort!: MatSort;
@@ -153,6 +153,17 @@ export class EmployeesListComponent implements OnInit, AfterViewInit {
     }).catch(err => {
 
     })
+  }
+
+  getAge(dateOfBirth: Date): number {
+    const today = new Date();
+    const birth = new Date(dateOfBirth);
+    let age = today.getFullYear() - birth.getFullYear();
+    const month = today.getMonth() - birth.getMonth();
+    if (month < 0 || (month === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    return age;
   }
 
 }
