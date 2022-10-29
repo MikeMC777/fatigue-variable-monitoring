@@ -1,3 +1,4 @@
+import { EmployeeDeviceI } from 'src/app/models/employee';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
@@ -53,4 +54,24 @@ export class CrudEmployeeService {
     .pipe(map(data => data));
   }
 
+  loadDevices(params: HttpParams): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/employee/device/get/${params.get('id')}`;
+    return this.httpClient
+    .get(urlApi, {params, headers: this.headers})
+    .pipe(map(data => data));
+  }
+
+  createDevice(newDevice: EmployeeDeviceI): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/employee/device/post`;
+    return this.httpClient
+    .post(urlApi, newDevice, {headers: this.headers})
+    .pipe(map(data => data));
+  }
+
+  deleteDevice(params: HttpParams): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/employee/device/delete/${params.get('id')}`;
+    return this.httpClient
+    .delete(urlApi, {headers: this.headers, params})
+    .pipe(map(data => data));
+  }
 }

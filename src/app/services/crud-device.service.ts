@@ -25,6 +25,13 @@ export class CrudDeviceService {
     .pipe(map(data => data));
   }
 
+  loadAllAvaliableDevice(): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/device/available/get`;
+    return this.httpClient
+    .get(urlApi, {headers: this.headers})
+    .pipe(map(data => data));
+  }
+
   loadDevice(params: HttpParams): Observable<any> {
     const urlApi = `${environment.apiUrl}/api/device/get/${params.get('id')}`;
     return this.httpClient

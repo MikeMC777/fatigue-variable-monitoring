@@ -27,6 +27,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ErrorComponent } from './components/error/error.component';
 import { ReportComponent } from './components/report/report.component';
 import { HeaderMobileMenuComponent } from './components/header-mobile-menu/header-mobile-menu.component';
+import { DeviceEmployeeItemComponent } from './components/employee/device-employee-item/device-employee-item.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { HeaderMobileMenuComponent } from './components/header-mobile-menu/heade
     HomeComponent,
     ErrorComponent,
     ReportComponent,
-    HeaderMobileMenuComponent
+    HeaderMobileMenuComponent,
+    DeviceEmployeeItemComponent
   ],
   imports: [
     BrowserModule,

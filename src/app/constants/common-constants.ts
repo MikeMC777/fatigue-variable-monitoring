@@ -11,6 +11,7 @@ export class CommonConstants {
   public static SUCCESSFUL_CREATE_PROCESS_TEXT: string = ' ha sido creado(a) exitosamente.';
   public static SUCCESSFUL_UPDATE_PROCESS_TEXT: string = ' ha sido actualizado(a) exitosamente.';
   public static SUCCESSFUL_DELETE_PROCESS_TEXT: string = ' ha sido eliminado(a) exitosamente.';
+  public static SUCCESSFUL_UNASSOCIATED_PROCESS_TEXT: string = ' ha sido desvinculado exitosamente.';
   public static TOKEN_ERROR_MESSAGE: string = 'Token ha expirado. Inicie sesión nuevamente.';
   public static CONNECTION_ERROR_MESSAGE: string = 'Problemas con la conexión.';
   public static DATA_BASE_CONNECTION_ERROR_MESSAGE: string = 'Error intentando acceder a la base de datos.';
