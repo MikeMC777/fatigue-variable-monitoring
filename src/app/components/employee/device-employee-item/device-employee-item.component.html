@@ -1,0 +1,20 @@
+<form onkeydown="return event.key != 'Enter'" [formGroup]="deviceFormGroup" class="col-12 col-lg-12 pl-2 py-1 my-1 border rounded bg-light row">
+  <div class="col-12 col-lg-10 col-xl-10 my-1">
+      <div class="row">
+          <div class="col-10 text-truncate">
+            <select *ngIf="!data.id" class="form-control" id="device" (change)="onChangeSelect()"
+              formControlName="device" style="height: 2.2rem;">
+              <option [value]="item.id" selected *ngFor="let item of deviceOptions"> {{item.name}}
+              </option>
+            </select>
+            <input *ngIf="data.id" disabled class="form-control" value="{{data.device_name}}"/>
+          </div>
+      </div>
+  </div>
+  <div class="col-1 col-xl-2 px-0 d-none d-lg-block align-self-center text-center" [ngClass]="{'pl-5': data.device_id}">
+      <button type="button" [disabled]="!data.device_id" *ngIf="employeeDeviceList.indexOf(data) == employeeDeviceList.length - 1" class="btn btn-primary mx-1" (click)="onAdd()" matTooltip="Agregar" matTooltipPosition="above"><i
+                  class="fa fa-save " aria-hidden="true "></i></button>
+      <button type="button" class="btn btn-danger mx-1" *ngIf="employeeDeviceList.indexOf(data) < employeeDeviceList.length - 1" [disabled]="employeeDeviceList.length == 1 || !data.device_id" (click)="onDelete() " matTooltip="Eliminar" matTooltipPosition="below"><i
+                  class="fa fa-minus " aria-hidden="true "></i></button>
+  </div>
+</form>

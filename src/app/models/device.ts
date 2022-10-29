@@ -6,3 +6,9 @@ export interface DeviceI {
     description: string,
     status: boolean
 }
+
+export interface AvailableDeviceI {
+  id?: number,
+  _uuid?: string,
+  name: string
+}

@@ -16,3 +16,11 @@ export interface EmployeeI {
   weight: number,
   email: string
 }
+
+export interface EmployeeDeviceI {
+  id?: number,
+  _uuid?: string,
+  employee_id: number;
+  device_id: number;
+  device_name?: string;
+}

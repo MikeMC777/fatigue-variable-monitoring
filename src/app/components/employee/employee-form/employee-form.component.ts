@@ -1,4 +1,6 @@
-import { AuthService } from './../../../services/auth.service';
+import { CrudDeviceService } from 'src/app/services/crud-device.service';
+import { EmployeeDeviceI } from 'src/app/models/employee';
+import { AuthService } from 'src/app/services/auth.service';
 import { IdSenderService } from 'src/app/services/id-sender.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -9,6 +11,8 @@ import { HttpParams } from '@angular/common/http';
 import { NgbToast, NgbToastType, NgbToastService } from 'ngb-toast';
 import Swal from 'sweetalert2';
 import { CommonConstants } from './../../../constants/common-constants';
+import { AvailableDeviceI } from 'src/app/models/device';
+import * as moment from 'moment';
 
 @Component({
   selector: 'fvm-employee-form',
@@ -35,6 +39,13 @@ export class EmployeeFormComponent implements OnInit {
   });
   /* Elemento de empleado por defecto */
   employeeItem!: EmployeeI;
+  deviceElements: EmployeeDeviceI[] = [{
+    _uuid: '',
+    device_id: 0,
+    employee_id: this._idSender.id,
+    id: 0,
+    device_name: ''}];
+  allAvailableDevices: AvailableDeviceI[] = [];
   /*Validaciones del formulario */
   validDocument = true;
   typing = false;
@@ -42,7 +53,7 @@ export class EmployeeFormComponent implements OnInit {
   router: Router
 
   constructor(_router: Router, private _idSender: IdSenderService, private _authService: AuthService,
-    private _employeeService: CrudEmployeeService, private _toastService: NgbToastService) {
+    private _employeeService: CrudEmployeeService, private _deviceService:  CrudDeviceService, private _toastService: NgbToastService) {
     this.router = _router;
   }
 
@@ -50,6 +61,8 @@ export class EmployeeFormComponent implements OnInit {
     /*Si es formulario de editar*/
     if (this.router.url === '/edit-employee') {
       this.loadInfoInsideForm(this._idSender._uuid);
+      this.loadDevicesByEmployee(this._idSender._uuid);
+      this.loadAllAvailableDevices();
     }
     /*Si es formulario de crear*/
     else {
@@ -123,7 +136,6 @@ export class EmployeeFormComponent implements OnInit {
           this.email.setValue(this.employeeItem.email);
           this.height.setValue(this.employeeItem.height);
           this.weight.setValue(this.employeeItem.weight);
-          this.loaded = true;
         } else {
           const toast: NgbToast = {
             toastType:  NgbToastType.Danger,
@@ -137,6 +149,43 @@ export class EmployeeFormComponent implements OnInit {
     } else {
       this.router.navigate(['/employees']);
     }
+  }
+
+  loadDevicesByEmployee(_uuid: string): any {
+    const params = new HttpParams()
+      .append('id', _uuid);
+    this._employeeService.loadDevices(params)
+    .subscribe(data => {
+      if (data.success) {
+        this.deviceElements = data.result.concat(this.deviceElements);
+      } else {
+        const toast: NgbToast = {
+          toastType:  NgbToastType.Danger,
+          text: CommonConstants.OBJECT_QUERY_ERROR_MESSAGE,
+          dismissible:  true,
+          timeInSeconds: 5
+        }
+        this._toastService.show(toast);
+      }
+    });
+  }
+
+  loadAllAvailableDevices(): any {
+    this._deviceService.loadAllAvaliableDevice()
+    .subscribe(data => {
+      if (data.success) {
+        this.allAvailableDevices = data.result;
+        this.loaded = true;
+      } else {
+        const toast: NgbToast = {
+          toastType:  NgbToastType.Danger,
+          text: CommonConstants.OBJECT_QUERY_ERROR_MESSAGE,
+          dismissible:  true,
+          timeInSeconds: 5
+        }
+        this._toastService.show(toast);
+      }
+    });
   }
 
   validateDocument(): boolean {
@@ -187,6 +236,7 @@ export class EmployeeFormComponent implements OnInit {
   onCreate() {
     this.loaded = false;
     //Crear empleado
+    this.employeeFormGroup.value['date_of_birth'] = moment(this.employeeFormGroup.value['date_of_birth']).format("YYYY-MM-DD hh:mm:ss");
     this._employeeService.createEmployee(this.employeeFormGroup.value).toPromise().then(data => {
       if (data.success) {
         Swal.fire({
@@ -210,6 +260,7 @@ export class EmployeeFormComponent implements OnInit {
     //Crear empleado
     this.employeeFormGroup.value.id = this.employeeItem.id;
     this.employeeFormGroup.value._uuid = this.employeeItem._uuid;
+    this.employeeFormGroup.value['date_of_birth'] = moment(this.employeeFormGroup.value['date_of_birth']).format("YYYY-MM-DD hh:mm:ss");
     this._employeeService.updateEmployee(this.employeeFormGroup.value).toPromise().then(data => {
       if (data.success) {
         Swal.fire({
@@ -242,6 +293,74 @@ export class EmployeeFormComponent implements OnInit {
         this.router.navigate(['/employees']);
       }
     });
+  }
+
+  removeDevice(employeeDeviceUuid: string) {
+    if (employeeDeviceUuid) {
+      const params = new HttpParams()
+        .append('id', employeeDeviceUuid);
+      this._employeeService.deleteDevice(params).toPromise().then(data => {
+        if (data.success) {
+          this.deviceElements = [{
+            _uuid: '',
+            device_id: 0,
+            employee_id: this._idSender.id,
+            id: 0,
+            device_name: ''}];
+          this.loadDevicesByEmployee(this._idSender._uuid);
+          this.loadAllAvailableDevices();
+          const toast: NgbToast = {
+            toastType:  NgbToastType.Success,
+            text: `${CommonConstants.DEVICE_MESSAGE} ${CommonConstants.SUCCESSFUL_UNASSOCIATED_PROCESS_TEXT}`,
+            dismissible:  true,
+            timeInSeconds: 5
+          }
+          this._toastService.show(toast);
+          return data;
+        } else {
+          this._authService.getErrorTable();
+        }
+      },
+      error => {
+        this._authService.getErrorToken(error);
+      }).catch(err => {
+
+      })
+    }
+  }
+
+  addDevice(deviceId: number) {
+    if (deviceId > 0) {
+      const employeeDevice: EmployeeDeviceI = {
+        device_id: deviceId,
+        employee_id: this._idSender.id
+      }
+      this._employeeService.createDevice(employeeDevice).toPromise().then(data => {
+        if (data.success) {
+          this.deviceElements = [{
+            _uuid: '',
+            device_id: 0,
+            employee_id: this._idSender.id,
+            id: 0,
+            device_name: ''}];
+          this.loadDevicesByEmployee(this._idSender._uuid);
+          this.loadAllAvailableDevices();
+        } else {
+          const toast: NgbToast = {
+            toastType:  NgbToastType.Danger,
+            text: CommonConstants.OBJECT_QUERY_ERROR_MESSAGE,
+            dismissible:  true,
+            timeInSeconds: 5
+          }
+          this._toastService.show(toast);
+        }
+      },
+      error => {
+        this._authService.getErrorToken(error);
+      }).catch(err => {
+
+      });
+    }
   }
 
 }

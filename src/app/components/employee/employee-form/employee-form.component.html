@@ -109,6 +109,17 @@
               <input formControlName="height" autocomplete="off" type="number" aria-describedby="heightContentHelp" class="form-control" id="heightContent" placeholder="Ingrese la altura en centímetros">
             </div>
           </div>
+          <div *ngIf="router.url === '/edit-employee'" class="row pb-0 pb-md-4 mx-0 px-0">
+            <h2>Dispositivos asociados</h2>
+            <fvm-device-employee-item class="col-6 d-flex justify-content-center" id="device-employee"
+              *ngFor="let deviceElement of deviceElements"
+              [employeeDeviceList]="deviceElements" [data]="deviceElement"
+              [deviceOptions]="allAvailableDevices"
+              (remove)="removeDevice($event)"
+              (add)="addDevice($event)">
+            </fvm-device-employee-item>
+          </div>
+
         </div>
         <div class="col-12 button-container py-2">
           <button mat-raised-button class="btn btn-outline-danger mx-2" mat-button (click)="onCancel()">
