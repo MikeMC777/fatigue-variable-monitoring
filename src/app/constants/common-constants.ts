@@ -8,6 +8,8 @@ export class CommonConstants {
   public static EMPLOYEE_MESSAGE: string = 'El(la) empleado(a) ';
   public static VARIABLE_MESSAGE: string = 'La variable ';
   public static DEVICE_MESSAGE: string = 'El dispositivo ';
+  public static TEMPLATE_MESSAGE: string = 'La plantilla ';
+  public static VARIABLE_RANGE_MESSAGE: string = 'El rango de la variable ';
   public static SUCCESSFUL_CREATE_PROCESS_TEXT: string = ' ha sido creado(a) exitosamente.';
   public static SUCCESSFUL_UPDATE_PROCESS_TEXT: string = ' ha sido actualizado(a) exitosamente.';
   public static SUCCESSFUL_DELETE_PROCESS_TEXT: string = ' ha sido eliminado(a) exitosamente.';

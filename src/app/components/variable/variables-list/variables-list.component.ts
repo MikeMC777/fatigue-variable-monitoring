@@ -1,3 +1,4 @@
+import { VariableRangeI } from './../../../models/variable';
 import { IdSenderService } from 'src/app/services/id-sender.service';
 import { NgbToast, NgbToastType, NgbToastService } from 'ngb-toast';
 import { CrudVariableService } from './../../../services/crud-variable.service';
@@ -22,7 +23,7 @@ import { CommonConstants } from 'src/app/constants/common-constants';
 export class VariablesListComponent implements OnInit, AfterViewInit {
 
   variablesList: Array<VariableI> = [];
-  displayedColumns: string[] = ['select', 'id', 'name', 'data_type', 'measurement_unit', 'min_range', 'max_range', 'status'];
+  displayedColumns: string[] = ['select', 'id', 'name', 'data_type', 'measurement_unit', 'range_for_age', 'status'];
   dataSource = new MatTableDataSource<VariableI>([]);
   selection = new SelectionModel<VariableI>(true, []);
   @ViewChild(MatSort) sort!: MatSort;
@@ -51,6 +52,11 @@ export class VariablesListComponent implements OnInit, AfterViewInit {
       .then(data => {
         if (data.success) {
           this.variablesList = data.result;
+          this.variablesList.forEach(async variable => {
+            if (variable._uuid) {
+              variable.has_range_for_age = await this.hasRangeByAge(variable._uuid) || false;
+            }
+          })
           this.dataSource = new MatTableDataSource<VariableI>(this.variablesList);
         } else {
           this._authService.getErrorTable();
@@ -61,6 +67,27 @@ export class VariablesListComponent implements OnInit, AfterViewInit {
       }).catch(err => {
 
       })
+  }
+
+  async hasRangeByAge(_uuid: string): Promise<boolean | void> {
+    const params = new HttpParams()
+      .append('id', _uuid);
+    return this._variableService.loadVariableRanges(params).toPromise().then(data => {
+      if (data.success) {
+        const variableRanges: VariableRangeI[] = data.result;
+        if (variableRanges.length == 0 || (variableRanges.length == 1 && variableRanges[0].min_age == 0 && variableRanges[0].max_age == 150)) {
+          return false;
+        }
+        return true;
+      } else {
+        this._authService.getErrorTable();
+      }
+    },
+    error => {
+      this._authService.getErrorToken(error);
+    }).catch(err => {
+
+    })
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -109,8 +136,10 @@ export class VariablesListComponent implements OnInit, AfterViewInit {
   editData() {
     const idToSend: number = !!this.selection.selected[0].id ? this.selection.selected[0].id : 0;
     const uuidToSend: string = !!this.selection.selected[0]._uuid ? this.selection.selected[0]._uuid : '';
+    const hasRangeForAgeToSend: boolean = !!this.selection.selected[0].has_range_for_age ? this.selection.selected[0].has_range_for_age : false;
     this._idSender.sendId(idToSend);
     this._idSender.sendUUID(uuidToSend);
+    this._idSender.sendHasRangeForAge(hasRangeForAgeToSend);
     this._router.navigate([`/edit-variable`]);
   }
 

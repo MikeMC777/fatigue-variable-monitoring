@@ -3,7 +3,7 @@
       <div class="row">
           <div class="col-10 text-truncate">
             <select *ngIf="!data.id" class="form-control" id="device" (change)="onChangeSelect()"
-              formControlName="device" style="height: 2.2rem;">
+              formControlName="device" style="height: 2.4rem;">
               <option [value]="item.id" selected *ngFor="let item of deviceOptions"> {{item.name}}
               </option>
             </select>

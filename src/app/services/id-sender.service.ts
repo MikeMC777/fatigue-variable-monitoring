@@ -10,6 +10,8 @@ export class IdSenderService {
   id: number = 0;
   state: string = '';
   object: any;
+  hasRangeForAge: boolean = false;
+
   private sendIdSubject = new Subject<{ id: number }>();
   sendIdObservable = this.sendIdSubject.asObservable();
 
@@ -21,6 +23,9 @@ export class IdSenderService {
 
   private sendSubjectObject = new Subject<{ obj: any }>();
   sendObjectObservable = this.sendSubjectObject.asObservable();
+
+  private sendHasRangeForAgeSubject = new Subject<{ value: boolean}>();
+  sendHasRangeForAgeObservable = this.sendHasRangeForAgeSubject.asObservable();
 
   //Almacenar ID
   sendId(id: number) {
@@ -42,5 +47,10 @@ export class IdSenderService {
   sendObjectByCode(obj: any) {
     this.object = obj;
     this.sendSubjectObject.next({ obj })
+  }
+
+  sendHasRangeForAge(value: boolean) {
+    this.hasRangeForAge = value;
+    this.sendHasRangeForAgeSubject.next({ value })
   }
 }

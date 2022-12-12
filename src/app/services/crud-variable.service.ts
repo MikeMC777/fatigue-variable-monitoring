@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/operators';
-import { VariableI } from '../models/variable';
+import { VariableI, VariableRangeI } from '../models/variable';
 import { environment } from './../../environments/environment';
 import { AuthService } from './auth.service';
 
@@ -32,6 +32,13 @@ export class CrudVariableService {
     .pipe(map(data => data));
   }
 
+  loadVariableUUID(params: HttpParams): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/variable/get/uuid/${params.get('id')}`;
+    return this.httpClient
+    .get(urlApi, {params, headers: this.headers})
+    .pipe(map(data => data));
+  }
+
   createVariable(newVariable: VariableI): Observable<any> {
     const urlApi = `${environment.apiUrl}/api/variable/post`;
     return this.httpClient
@@ -48,6 +55,34 @@ export class CrudVariableService {
 
   deleteVariable(params: HttpParams): Observable<any> {
     const urlApi = `${environment.apiUrl}/api/variable/delete/${params.get('id')}`;
+    return this.httpClient
+    .delete(urlApi, {headers: this.headers, params})
+    .pipe(map(data => data));
+  }
+
+  loadVariableRanges(params: HttpParams): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/variable/range/get/${params.get('id')}`;
+    return this.httpClient
+    .get(urlApi, {params, headers: this.headers})
+    .pipe(map(data => data));
+  }
+
+  createVariableRange(newVariableRange: VariableRangeI): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/variable/range/post`;
+    return this.httpClient
+    .post(urlApi, newVariableRange, {headers: this.headers})
+    .pipe(map(data => data));
+  }
+
+  updateVariableRange(variableRange: VariableRangeI): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/variable/range/put/${variableRange._uuid}`;
+    return this.httpClient
+    .put(urlApi, variableRange, {headers: this.headers})
+    .pipe(map(data => data));
+  }
+
+  deleteVariableRange(params: HttpParams): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/variable/range/delete/${params.get('id')}`;
     return this.httpClient
     .delete(urlApi, {headers: this.headers, params})
     .pipe(map(data => data));

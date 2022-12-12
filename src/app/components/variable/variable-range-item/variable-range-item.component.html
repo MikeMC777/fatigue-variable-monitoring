@@ -1,0 +1,33 @@
+<form onkeydown="return event.key != 'Enter'" [formGroup]="rangeFormGroup" class="col-12 col-lg-12 pl-2 py-1 my-1 border rounded bg-light row">
+  <div class="col-12 col-lg-10 col-xl-10 my-1">
+      <div class="row">
+          <div class="col-3 text-truncate">
+              <label class="mb-1" for="minAgeContent" matTooltip="Edad mínima" matTooltipPosition="right">Edad mínima</label>
+              <input formControlName="min_age" autocomplete="off" type="number" aria-describedby="minAgeContentHelp"
+                class="form-control" id="minAgeContent" placeholder="" value="{{data.min_age}}">
+          </div>
+          <div class="col-3 text-truncate">
+              <label class="mb-1" for="maxAgeContent" matTooltip="Edad máxima" matTooltipPosition="right">Edad máxima</label>
+              <input formControlName="max_age" autocomplete="off" type="number" aria-describedby="maxAgeContentHelp"
+                class="form-control" id="maxAgeContent" placeholder="" value="{{data.max_age}}">
+          </div>
+          <div class="col-3 text-truncate">
+              <label class="mb-1" for="minRangeContent" matTooltip="Rango mínimo" matTooltipPosition="right">Rango mínimo</label>
+              <input formControlName="min_range" autocomplete="off" type="number" aria-describedby="minRangeContentHelp"
+                class="form-control" id="minRangeContent" placeholder="" value="{{data.min_range}}">
+          </div>
+          <div class="col-3 text-truncate">
+              <label class="mb-1" for="maxRangeContent" matTooltip="Rango máximo" matTooltipPosition="right">Rango máximo</label>
+              <input formControlName="max_range" autocomplete="off" type="number" aria-describedby="maxRangeContentHelp"
+                class="form-control" id="maxRangeContent" placeholder="" value="{{data.max_range}}">
+          </div>
+      </div>
+  </div>
+  <div class="col-1 col-xl-2 px-0 d-none d-lg-block align-self-center text-center" [ngClass]="{'pl-5': data.id}">
+      <button type="button" [disabled]="minAge.value < 0 || !maxAge.value || !minRange.value || !maxRange.value" *ngIf="variableRangeList.indexOf(data) == variableRangeList.length - 1"
+          class="btn btn-primary mx-1" (click)="onAdd()" matTooltip="Agregar" matTooltipPosition="above" [disabled]="rangeFormGroup.invalid"><i
+                  class="fa fa-save" aria-hidden="true"></i></button>
+      <button type="button" class="btn btn-danger mx-1" *ngIf="variableRangeList.indexOf(data) < variableRangeList.length - 1" [disabled]="variableRangeList.length == 1 || !data.id" (click)="onDelete() " matTooltip="Eliminar" matTooltipPosition="below"><i
+                  class="fa fa-minus" aria-hidden="true"></i></button>
+  </div>
+</form>

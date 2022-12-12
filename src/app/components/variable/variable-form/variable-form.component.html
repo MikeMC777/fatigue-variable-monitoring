@@ -5,7 +5,7 @@
         <div class="col-12 row">
           <div class="row pb-0 pb-md-4 mx-0 px-0">
             <div class="col-12 col-md-3 form-group-feedback text-truncate">
-              <label class="mb-1" for="nameContent" matTooltip="Nombre" matTooltipPosition="right">Nombre</label>
+              <label class="mb-1" for="nameContent" matTooltip="Especifica el nombre de la variable. Después de creado, no podrá ser modificado." matTooltipPosition="right">Nombre</label>
               <ng-container *ngIf="router.url === '/form-variable'; then createName else editName">
               </ng-container>
               <ng-template #createName>
@@ -22,40 +22,56 @@
               </ng-template>
             </div>
             <div class="col-12 col-md-3 mb-3 text-truncate">
-              <label class="mb-1" for="dataTypeSelect" matTooltip="Tipo de dato" matTooltipPosition="right">Tipo de dato</label>
-              <select formControlName="data_type" class="form-control" id="dataTypeSelect" style="height: 2.2rem;">
+              <label class="mb-1" for="dataTypeSelect" matTooltip="Especifica el tipo de dato que se almacenará para esta variable." matTooltipPosition="right">Tipo de dato</label>
+              <select formControlName="data_type" class="form-control" id="dataTypeSelect" style="height: 2.4rem;">
                 <option value="DEC">Decimal</option>
                 <option value="INT">Entero</option>
               </select>
             </div>
             <div class="col-12 col-md-3 form-group-feedback text-truncate">
-              <label class="mb-1" for="measurementUnitContent" matTooltip="Unidad de medida" matTooltipPosition="right">Unidad de medida</label>
+              <label class="mb-1" for="measurementUnitContent" matTooltip="Unidad de medida utilizado para esta variable." matTooltipPosition="right">Unidad de medida</label>
               <small class="text-danger" *ngIf="measurementUnit.hasError('maxlength')">Máximo 100 caracteres</small>
               <small class="text-danger" *ngIf="measurementUnit.hasError('required') && measurementUnit.touched">Campo requerido</small>
               <input formControlName="measurement_unit" autocomplete="off" type="text" aria-describedby="measurementUnitContentHelp" class="form-control" id="measurementUnitContent" placeholder="Ingrese la unidad de medida">
             </div>
+
+
             <div class="col-12 col-md-3 form-group-feedback text-truncate">
               <ng-container *ngIf="router.url === '/edit-variable'; then editStatus">
               </ng-container>
               <ng-template #editStatus>
                 <section class="example-section">
-                  <mat-checkbox class="example-margin" formControlName="status">Activo</mat-checkbox>
+                  <mat-checkbox class="example-margin py-3" formControlName="status">Activo</mat-checkbox>
                 </section>
               </ng-template>
             </div>
+            <div class="col-12 col-md-3 form-group-feedback text-truncate" *ngIf="router.url === '/edit-variable'">
+              <section class="example-section">
+                <mat-checkbox class="example-margin py-3" formControlName="has_range_for_age" (change)="hasAgeRangeChange($event)">¿Tiene rangos por edad?</mat-checkbox>
+              </section>
+            </div>
           </div>
-          <div class="row pb-0 pb-md-4 mx-0 px-0">
+          <div class="row pb-0 pb-md-4 mx-0 px-0" *ngIf="router.url === '/edit-variable' && !hasRangeForAge.value">
+            <h2>Rangos asociados</h2>
             <span class="mb-2 mt-3">Defina los valores mínimos y máximos para considerar la medición de la variable dentro de lo normal</span>
             <div class="col-12 col-md-3 form-group-feedback text-truncate">
-              <label class="mb-1" for="minRangeContent" matTooltip="Rango mínimo" matTooltipPosition="right">Rango mínimo</label>
-              <small class="text-danger" *ngIf="minRange.hasError('required') && minRange.touched">Campo requerido</small>
+              <label class="mb-1" for="minRangeContent" matTooltip="Especifica el valor mínimo que puede tener la variable en las mediciones para decir que está dentro del rango normal." matTooltipPosition="right">Rango mínimo</label>
               <input formControlName="min_range" autocomplete="off" type="number" aria-describedby="minRangeContentHelp" class="form-control" id="minRangeContent" placeholder="Ingrese el rango mínimo">
             </div>
             <div class="col-12 col-md-3 form-group-feedback text-truncate">
-              <label class="mb-1" for="maxRangeContent" matTooltip="Rango máximo" matTooltipPosition="right">Rango máximo</label>
-              <small class="text-danger" *ngIf="maxRange.hasError('required') && maxRange.touched">Campo requerido</small>
+              <label class="mb-1" for="maxRangeContent" matTooltip="Especifica el valor máximo que puede tener la variable en las mediciones para decir que está dentro del rango normal." matTooltipPosition="right">Rango máximo</label>
               <input formControlName="max_range" autocomplete="off" type="number" aria-describedby="maxRangeContentHelp" class="form-control" id="maxRangeContent" placeholder="Ingrese el rango máximo">
             </div>
+          </div>
+          <div *ngIf="router.url === '/edit-variable' && !!hasRangeForAge.value" class="row pb-0 pb-md-4 mx-0 px-0">
+            <h2>Rangos asociados</h2>
+            <fvm-variable-range-item
+              class="col-6 d-flex justify-content-center" id="variable-range"
+              *ngFor="let range of variableRanges"
+              [variableRangeList]="variableRanges" [data]="range"
+              (remove)="removeRange($event)"
+              (add)="addRange($event)">
+            </fvm-variable-range-item>
           </div>
         </div>
         <div class="col-12 button-container py-2">
@@ -64,8 +80,10 @@
           <ng-container *ngIf="router.url === '/edit-variable'; then editVariableButton else createVariableButton">
           </ng-container>
           <ng-template #createVariableButton>
-              <button mat-raised-button [disabled]="variableFormGroup.invalid || !validName || typing" class="btn btn-outline-success mx-2" mat-button (click)="onCreate()">
+              <button mat-raised-button [disabled]="variableFormGroup.invalid || !validName || typing" class="btn btn-outline-success mx-2" mat-button (click)="onCreate(true)">
                 <i class="fa fa-check-circle" aria-hidden="true"></i> Guardar</button>
+              <button mat-raised-button [disabled]="variableFormGroup.invalid || !validName || typing" class="btn btn-outline-warning mx-2" mat-button (click)="onCreate()">
+                <i class="fa fa-check-circle" aria-hidden="true"></i> Guardar y volver</button>
           </ng-template>
           <ng-template #editVariableButton>
               <button mat-raised-button [disabled]="variableFormGroup.invalid" class="btn btn-outline-success mx-2" mat-button (click)="onUpdate()">
