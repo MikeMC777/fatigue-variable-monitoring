@@ -20,7 +20,7 @@ export interface EmployeeI {
 export interface EmployeeDeviceI {
   id?: number,
   _uuid?: string,
-  employee_id: number;
-  device_id: number;
-  device_name?: string;
+  employee_id: number,
+  device_id: number,
+  device_name?: string
 }

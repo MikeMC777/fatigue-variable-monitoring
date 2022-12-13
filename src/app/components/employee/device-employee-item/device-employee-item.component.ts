@@ -24,7 +24,6 @@ export class DeviceEmployeeItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('this.data27', this.data);
   }
 
   //Cambiar valor del select

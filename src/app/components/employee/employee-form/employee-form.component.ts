@@ -50,7 +50,7 @@ export class EmployeeFormComponent implements OnInit {
   validDocument = true;
   typing = false;
   loaded = false;
-  router: Router
+  router: Router;
 
   constructor(_router: Router, private _idSender: IdSenderService, private _authService: AuthService,
     private _employeeService: CrudEmployeeService, private _deviceService:  CrudDeviceService, private _toastService: NgbToastService) {
@@ -171,8 +171,7 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   loadAllAvailableDevices(): any {
-    this._deviceService.loadAllAvaliableDevice()
-    .subscribe(data => {
+    this._deviceService.loadAllAvaliableDevice().toPromise().then(data => {
       if (data.success) {
         this.allAvailableDevices = data.result;
         this.loaded = true;

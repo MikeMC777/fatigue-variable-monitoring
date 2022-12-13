@@ -28,6 +28,7 @@ import { ErrorComponent } from './components/error/error.component';
 import { ReportComponent } from './components/report/report.component';
 import { HeaderMobileMenuComponent } from './components/header-mobile-menu/header-mobile-menu.component';
 import { DeviceEmployeeItemComponent } from './components/employee/device-employee-item/device-employee-item.component';
+import { VariableRangeItemComponent } from './components/variable/variable-range-item/variable-range-item.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { DeviceEmployeeItemComponent } from './components/employee/device-employ
     ErrorComponent,
     ReportComponent,
     HeaderMobileMenuComponent,
-    DeviceEmployeeItemComponent
+    DeviceEmployeeItemComponent,
+    VariableRangeItemComponent
   ],
   imports: [
     BrowserModule,

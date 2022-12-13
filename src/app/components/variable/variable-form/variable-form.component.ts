@@ -2,13 +2,14 @@ import { AuthService } from './../../../services/auth.service';
 import { IdSenderService } from 'src/app/services/id-sender.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { VariableI } from 'src/app/models/variable';
+import { FormGroup, Validators, FormControl, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
+import { VariableI, VariableRangeI } from 'src/app/models/variable';
 import { CrudVariableService } from 'src/app/services/crud-variable.service';
 import { HttpParams } from '@angular/common/http';
 import { NgbToast, NgbToastType, NgbToastService } from 'ngb-toast';
 import Swal from 'sweetalert2';
 import { CommonConstants } from './../../../constants/common-constants';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'fvm-variable-form',
@@ -18,15 +19,28 @@ import { CommonConstants } from './../../../constants/common-constants';
 export class VariableFormComponent implements OnInit {
   maxDate: Date = new Date();
   variableFormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.maxLength(30)]),
+    name: new FormControl('', [Validators.required, Validators.maxLength(60)]),
     data_type: new FormControl('DEC', Validators.maxLength(3)),
     measurement_unit: new FormControl('', Validators.maxLength(100)),
-    min_range: new FormControl(null, Validators.required),
-    max_range: new FormControl(null, Validators.required),
+    min_range: new FormControl(null, null),
+    max_range: new FormControl(null, null),
+    has_range_for_age: new FormControl(false, null),
     status: new FormControl(true, null)
-  });
+  }, {validators: this.hasValidRanges()});
   /* Elemento de variable por defecto */
   variableItem!: VariableI;
+
+  variableRanges: VariableRangeI[] = [];
+
+  variableRangesDummie: VariableRangeI[] = [{
+    _uuid: '',
+    id: 0,
+    variable_id: this._idSender.id,
+    min_age: 0,
+    max_age: 0,
+    min_range: 0,
+    max_range: 0
+  }];
   /*Validaciones del formulario */
   validName = true;
   typing = false;
@@ -41,7 +55,10 @@ export class VariableFormComponent implements OnInit {
   ngOnInit(): void {
     /*Si es formulario de editar*/
     if (this.router.url === '/edit-variable') {
-      this.loadInfoInsideForm(this._idSender._uuid);
+      this.loadInfoInsideForm(this._idSender._uuid).then(()=> {
+        this.loadRanges(this._idSender._uuid);
+      });
+
     }
     /*Si es formulario de crear*/
     else {
@@ -58,17 +75,20 @@ export class VariableFormComponent implements OnInit {
   get measurementUnit(): any {
     return this.variableFormGroup.get('measurement_unit');
   }
+  get status(): any {
+    return this.variableFormGroup.get('status');
+  }
+  get hasRangeForAge(): any {
+    return this.variableFormGroup.get('has_range_for_age');
+  }
   get minRange(): any {
     return this.variableFormGroup.get('min_range');
   }
   get maxRange(): any {
     return this.variableFormGroup.get('max_range');
   }
-  get status(): any {
-    return this.variableFormGroup.get('status');
-  }
 
-  loadInfoInsideForm(_uuid: string): any {
+  async loadInfoInsideForm(_uuid: string): Promise<any> {
     //Si no tiene un id, debe devolverse a la dataTable de variables
     if (_uuid) {
       const params = new HttpParams()
@@ -80,10 +100,10 @@ export class VariableFormComponent implements OnInit {
           this.name.setValue(this.variableItem.name);
           this.dataType.setValue(this.variableItem.data_type);
           this.measurementUnit.setValue(this.variableItem.measurement_unit);
-          this.minRange.setValue(this.variableItem.min_range);
-          this.maxRange.setValue(this.variableItem.max_range);
+          this.hasRangeForAge.setValue(this._idSender.hasRangeForAge)
           this.status.setValue(this.variableItem.status);
           this.loaded = true;
+          return ;
         } else {
           const toast: NgbToast = {
             toastType:  NgbToastType.Danger,
@@ -99,6 +119,35 @@ export class VariableFormComponent implements OnInit {
     }
   }
 
+  loadRanges(_uuid: string): any {
+    if (!!_uuid) {
+      const params = new HttpParams().append('id', _uuid);
+      return this._variableService.loadVariableRanges(params).toPromise().then(data => {
+        if (data.success) {
+          this.variableRanges = data.result.sort((a: VariableRangeI, b: VariableRangeI) => {
+            return (a.min_age - b.min_age);
+          });
+          if (this._idSender.hasRangeForAge) {
+            this.variableRanges = this.variableRanges.concat(this.variableRangesDummie);
+          }
+          if (!this._idSender.hasRangeForAge && this.variableRanges.length == 1 &&
+            this.variableRanges[0].min_age == 0 && this.variableRanges[0].max_age == 150) {
+            this.minRange.setValue(this.variableRanges[0].min_range);
+            this.maxRange.setValue(this.variableRanges[0].max_range);
+          }
+        } else {
+          this._authService.getErrorTable();
+        }
+      },
+      error => {
+        this._authService.getErrorToken(error);
+      }).catch(err => {
+
+      })
+    }
+
+  }
+
   validateName(): boolean {
     if (this.name !== '') {
       this.typing = false;
@@ -106,6 +155,7 @@ export class VariableFormComponent implements OnInit {
     }
     return false;
   }
+
   getNamesOfVariables(): boolean {
     this._variableService.loadVariables().toPromise().then(data => {
       if (data.success) {
@@ -144,17 +194,41 @@ export class VariableFormComponent implements OnInit {
     }
   }
 
-  onCreate() {
+  onCreate(toContinue = false) {
     this.loaded = false;
     //Crear variable
-    this._variableService.createVariable(this.variableFormGroup.value).toPromise().then(data => {
+    const variableItem: VariableI = {
+      name: this.variableFormGroup.value.name,
+      data_type: this.variableFormGroup.value.data_type,
+      measurement_unit: this.variableFormGroup.value.measurement_unit,
+      status: this.variableFormGroup.value.status
+    }
+    this._variableService.createVariable(variableItem).toPromise().then(data => {
       if (data.success) {
         Swal.fire({
           type: 'success',
           title: CommonConstants.SUCCESSFUL_PROCESS_TITLE,
-          text: `${CommonConstants.VARIABLE_MESSAGE} ${this.variableFormGroup.value.name} ${CommonConstants.SUCCESSFUL_CREATE_PROCESS_TEXT}`
+          text: `${CommonConstants.VARIABLE_MESSAGE} ${variableItem.name} ${CommonConstants.SUCCESSFUL_CREATE_PROCESS_TEXT}`
         });
-        this.router.navigate(['/variables']);
+        if (toContinue) {
+          this._idSender.sendId(data.result.insertId);
+          const params = new HttpParams().append('id', data.result.insertId);
+          this._variableService.loadVariableUUID(params).toPromise().then(data => {
+            if (data.success) {
+              this._idSender.sendUUID(data.result._uuid);
+              this.router.navigate([`/edit-variable`]);
+            } else {
+              //Error de proceso
+              this._authService.getErrorProccess(data);
+            }
+          }, error => {
+            this._authService.getErrorToken(error);
+          }).catch(err => {
+
+          });
+        } else {
+          this.router.navigate(['/variables']);
+        }
       } else {
         //Error de proceso
         this._authService.getErrorProccess(data);
@@ -165,18 +239,42 @@ export class VariableFormComponent implements OnInit {
 
     })
   }
+
   onUpdate() {
     this.loaded = false;
     //Crear variable
     this.variableFormGroup.value.id = this.variableItem.id;
     this.variableFormGroup.value._uuid = this.variableItem._uuid;
-    this._variableService.updateVariable(this.variableFormGroup.value).toPromise().then(data => {
+    const variableItem: VariableI = {
+      id: this.variableFormGroup.value.id,
+      _uuid: this.variableFormGroup.value._uuid,
+      name: this.variableFormGroup.value.name,
+      data_type: this.variableFormGroup.value.data_type,
+      measurement_unit: this.variableFormGroup.value.measurement_unit,
+      status: this.variableFormGroup.value.status
+    }
+    this._variableService.updateVariable(variableItem).toPromise().then(data => {
       if (data.success) {
         Swal.fire({
           type: 'success',
           title: CommonConstants.SUCCESSFUL_PROCESS_TITLE,
-          text: `${CommonConstants.VARIABLE_MESSAGE} ${this.variableItem.name} ${CommonConstants.SUCCESSFUL_UPDATE_PROCESS_TEXT}`
+          text: `${CommonConstants.VARIABLE_MESSAGE} ${variableItem.name} ${CommonConstants.SUCCESSFUL_UPDATE_PROCESS_TEXT}`
         });
+        if (!this.hasRangeForAge.value && !!this.minRange.value && !!this.maxRange.value) {
+          let variableRange: VariableRangeI = {
+            variable_id: this._idSender.id,
+            min_age: 0,
+            max_age: 150,
+            min_range: this.minRange.value,
+            max_range: this.maxRange.value
+          }
+          if (this.variableRanges.length == 1) {
+            variableRange._uuid = this.variableRanges[0]._uuid;
+            this.updateRange(variableRange);
+          } else {
+            this.addRange(variableRange);
+          }
+        }
         this.router.navigate(['/variables']);
       } else {
         //Error de proceso
@@ -204,4 +302,150 @@ export class VariableFormComponent implements OnInit {
     });
   }
 
+  removeRange(variableRangeUuid: string, showChange: boolean = true) {
+    if (variableRangeUuid) {
+      const params = new HttpParams()
+        .append('id', variableRangeUuid);
+      this._variableService.deleteVariableRange(params).toPromise().then(data => {
+        if (data.success) {
+          this.variableRanges = [{
+            _uuid: '',
+            id: 0,
+            variable_id: this._idSender.id,
+            min_age: 0,
+            max_age: 0,
+            min_range: 0,
+            max_range: 0
+          }];
+          this.loadRanges(this._idSender._uuid);
+          if (showChange) {
+            const toast: NgbToast = {
+              toastType:  NgbToastType.Success,
+              text: `${CommonConstants.VARIABLE_RANGE_MESSAGE} ${CommonConstants.SUCCESSFUL_DELETE_PROCESS_TEXT}`,
+              dismissible:  true,
+              timeInSeconds: 5
+            }
+            this._toastService.show(toast);
+          }
+          return data;
+        } else {
+          this._authService.getErrorTable();
+        }
+      },
+      error => {
+        this._authService.getErrorToken(error);
+      }).catch(err => {
+
+      })
+    }
+  }
+
+  updateRange(range: VariableRangeI) {
+    if (range) {
+      let variableRange: VariableRangeI = {
+        _uuid: range._uuid,
+        variable_id: this._idSender.id,
+        min_age: range.min_age,
+        max_age: range.max_age,
+        min_range: range.min_range,
+        max_range: range.max_range
+      }
+      this._variableService.updateVariableRange(variableRange).toPromise().then(data => {
+        if (data.success) {
+          const toast: NgbToast = {
+            toastType:  NgbToastType.Success,
+            text: `${CommonConstants.VARIABLE_RANGE_MESSAGE} ${CommonConstants.SUCCESSFUL_UPDATE_PROCESS_TEXT}`,
+            dismissible:  true,
+            timeInSeconds: 5
+          }
+          this._toastService.show(toast);
+        } else {
+          this._authService.getErrorTable();
+        }
+      },
+      error => {
+        this._authService.getErrorToken(error);
+      }).catch(err => {
+
+      });
+    }
+  }
+
+  addRange(range: VariableRangeI) {
+    if (range) {
+      let variableRange: VariableRangeI = {
+        variable_id: this._idSender.id,
+        min_age: range.min_age,
+        max_age: range.max_age,
+        min_range: range.min_range,
+        max_range: range.max_range
+      }
+
+      if (this.variableRanges.length == 1 && this.variableRanges[0].min_age == 0 && this.variableRanges[0].max_age == 150 && !!this.variableRanges[0]._uuid) {
+        this.removeRange(this.variableRanges[0]._uuid, false);
+      }
+      this._variableService.createVariableRange(variableRange).toPromise().then(data => {
+        if (data.success) {
+          this.variableRanges = [{
+            _uuid: '',
+            id: 0,
+            variable_id: this._idSender.id,
+            min_age: 0,
+            max_age: 0,
+            min_range: 0,
+            max_range: 0
+          }];
+          this.loadRanges(this._idSender._uuid);
+          const toast: NgbToast = {
+            toastType:  NgbToastType.Success,
+            text: `${CommonConstants.VARIABLE_RANGE_MESSAGE} ${CommonConstants.SUCCESSFUL_CREATE_PROCESS_TEXT}`,
+            dismissible:  true,
+            timeInSeconds: 5
+          }
+          this._toastService.show(toast);
+        } else {
+          this._authService.getErrorTable();
+        }
+      },
+      error => {
+        this._authService.getErrorToken(error);
+      }).catch(err => {
+
+      });
+    }
+  }
+
+  hasAgeRangeChange(event: MatCheckboxChange) {
+    if (!!this.variableRanges[0] && !!this.variableRanges[0]._uuid) {
+      if (!event.checked) {
+        this._idSender.sendHasRangeForAge(false);
+        for (let variableRange of this.variableRanges) {
+          if (variableRange._uuid) {
+            this.removeRange(variableRange._uuid);
+          }
+        }
+      } else if (event.checked) {
+        this._idSender.sendHasRangeForAge(true);
+        this.removeRange(this.variableRanges[0]._uuid);
+        this.minRange.setValue('');
+        this.maxRange.setValue('');
+      }
+    } else {
+      if (!event.checked) {
+        this._idSender.sendHasRangeForAge(false);
+      } else {
+        this._idSender.sendHasRangeForAge(true);
+        this.variableRanges = this.variableRangesDummie;
+        this.minRange.setValue('');
+        this.maxRange.setValue('');
+      }
+    }
+  }
+
+  hasValidRanges(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const isInvalid = control.value['min_range'] > control.value['max_range'];
+      return isInvalid ? {validRanges: false} : null;
+    };
+  };
 }
