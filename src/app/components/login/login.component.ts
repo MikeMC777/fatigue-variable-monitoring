@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserI } from 'src/app/models/user';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import * as CryptoJS from 'crypto-js';
 import { environment } from 'src/environments/environment';
@@ -24,9 +24,9 @@ export class LoginComponent implements OnInit {
     nombre: '',
     password: ''
   };
-  signUpForm!: FormGroup;
+  signUpForm!: UntypedFormGroup;
 
-  constructor(private _authService: AuthService, private router: Router, private builder: FormBuilder) {}
+  constructor(private _authService: AuthService, private router: Router, private builder: UntypedFormBuilder) {}
 
   ngOnInit() {
     this.signUpForm = this.builder.group({

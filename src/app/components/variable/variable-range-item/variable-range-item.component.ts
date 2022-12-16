@@ -1,6 +1,6 @@
 import { VariableRangeI } from './../../../models/variable';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormControl, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
 @Component({
   selector: 'fvm-variable-range-item',
@@ -15,11 +15,11 @@ export class VariableRangeItemComponent implements OnInit {
 
   @Output() remove: EventEmitter<string> = new EventEmitter<string>();
   @Output() add: EventEmitter<VariableRangeI> = new EventEmitter<VariableRangeI>();
-  rangeFormGroup = new FormGroup({
-    min_age: new FormControl('', [Validators.required, Validators.min(0)]),
-    max_age: new FormControl('', [Validators.required, Validators.min(0), Validators.max(150)]),
-    min_range: new FormControl('', [Validators.required]),
-    max_range: new FormControl('', [Validators.required])
+  rangeFormGroup = new UntypedFormGroup({
+    min_age: new UntypedFormControl('', [Validators.required, Validators.min(0)]),
+    max_age: new UntypedFormControl('', [Validators.required, Validators.min(0), Validators.max(150)]),
+    min_range: new UntypedFormControl('', [Validators.required]),
+    max_range: new UntypedFormControl('', [Validators.required])
   }, {validators: this.hasValidRanges()})
 
   constructor() { }

@@ -2,7 +2,7 @@ import { AuthService } from './../../../services/auth.service';
 import { IdSenderService } from 'src/app/services/id-sender.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { UntypedFormGroup, Validators, UntypedFormControl } from '@angular/forms';
 import { DeviceI } from 'src/app/models/device';
 import { CrudDeviceService } from 'src/app/services/crud-device.service';
 import { HttpParams } from '@angular/common/http';
@@ -17,11 +17,11 @@ import { CommonConstants } from './../../../constants/common-constants';
 })
 export class DeviceFormComponent implements OnInit {
   maxDate: Date = new Date();
-  deviceFormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.maxLength(30)]),
-    reference: new FormControl(null, Validators.required),
-    description: new FormControl('', Validators.maxLength(250)),
-    status: new FormControl(true, null)
+  deviceFormGroup = new UntypedFormGroup({
+    name: new UntypedFormControl('', [Validators.required, Validators.maxLength(30)]),
+    reference: new UntypedFormControl(null, Validators.required),
+    description: new UntypedFormControl('', Validators.maxLength(250)),
+    status: new UntypedFormControl(true, null)
   });
   /* Elemento de dispositivo por defecto */
   deviceItem!: DeviceI;

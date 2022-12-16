@@ -3,7 +3,7 @@ import { CrudDeviceService } from 'src/app/services/crud-device.service';
 import { CrudTemplateService } from 'src/app/services/crud-template.service';
 import { DeviceI } from 'src/app/models/device';
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormControl, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TemplateI } from 'src/app/models/template';
 import { AuthService } from 'src/app/services/auth.service';
@@ -21,10 +21,10 @@ import Swal from 'sweetalert2';
 })
 export class TemplateFormComponent implements OnInit {
 
-  templateFormGroup = new FormGroup({
-    device_id: new FormControl('', [Validators.required]),
-    variable_id: new FormControl('', [Validators.required]),
-    position: new FormControl(null, Validators.required)
+  templateFormGroup = new UntypedFormGroup({
+    device_id: new UntypedFormControl('', [Validators.required]),
+    variable_id: new UntypedFormControl('', [Validators.required]),
+    position: new UntypedFormControl(null, Validators.required)
   },{validators: this.hasTemplateWithSamePosition()});
   templateItem!: TemplateI;
   deviceOptions: DeviceI[] = [];
