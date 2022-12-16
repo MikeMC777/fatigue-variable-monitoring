@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000',
-  secretkey: 'mZNwNeoa6A7b',
+  secretkey: 'mZNwNeoa6A7bbbbb',
 };
 
 /*

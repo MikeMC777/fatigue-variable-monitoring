@@ -133,7 +133,7 @@ export class TemplateFormComponent implements OnInit {
 
   loadTemplatesByDevice(deviceId: string) {
     const params = new HttpParams()
-        .append('id', deviceId);
+        .append('device_id', deviceId);
     this._templateService.loadTemplatesByDevice(params).toPromise().then(data => {
       if (data.success) {
         this.templateByDevice = data.result;
