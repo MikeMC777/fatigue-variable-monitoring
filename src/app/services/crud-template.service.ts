@@ -33,7 +33,7 @@ export class CrudTemplateService {
   }
 
   loadTemplatesByDevice(params: HttpParams): Observable<any> {
-    const urlApi = `${environment.apiUrl}/api/template/device/get/${params.get('id')}`;
+    const urlApi = `${environment.apiUrl}/api/template/device/get/${params.get('device_id')}`;
     return this.httpClient
     .get(urlApi, {params, headers: this.headers})
     .pipe(map(data => data));
