@@ -6,7 +6,6 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { TemplateI } from '../../../models/template'
-import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/services/auth.service';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -27,6 +26,7 @@ export class TemplatesListComponent implements OnInit, AfterViewInit {
   selection = new SelectionModel<TemplateI>(true, []);
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  loaded = false;
 
   constructor(private _templateService: CrudTemplateService,
     private _authService: AuthService, private _toastService: NgbToastService,
@@ -52,6 +52,7 @@ export class TemplatesListComponent implements OnInit, AfterViewInit {
         if (data.success) {
           this.templatesList = data.result;
           this.dataSource = new MatTableDataSource<TemplateI>(this.templatesList);
+          this.loaded = true;
         } else {
           this._authService.getErrorTable();
         }

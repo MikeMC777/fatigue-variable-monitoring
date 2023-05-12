@@ -7,7 +7,8 @@ import { Socket } from 'ngx-socket-io';
   providedIn: 'root'
 })
 export class SocketWebService extends Socket{
-  @Output() outEvent: EventEmitter<any> = new EventEmitter();
+  @Output() outInsertPlotEvent: EventEmitter<any> = new EventEmitter();
+  @Output() outReportEvent: EventEmitter<any> = new EventEmitter();
 
   constructor() {
     super({
@@ -18,7 +19,13 @@ export class SocketWebService extends Socket{
 
   listen(): void {
     this.ioSocket.on('event-insert-plot-sent', (res: any) => {
-      this.outEvent.emit(res)
-    })
+      this.outInsertPlotEvent.emit(res)
+    });
+
+    this.ioSocket.on('event-report', (res: any) => {
+      this.outReportEvent.emit(res)
+    });
   }
 }
+
+

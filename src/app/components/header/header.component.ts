@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { CommonConstants } from 'src/app/constants/common-constants';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'fvm-header',
@@ -11,8 +12,9 @@ export class HeaderComponent implements OnInit {
 
   routerConfig: any = {};
   currentUrl: string = '';
+  userName: string = '';
 
-  constructor(private _router: Router) {
+  constructor(private _router: Router, private _authService: AuthService) {
     this._router.events.subscribe(val => {
       if (val instanceof NavigationEnd) {
         this.currentUrl = this.getFormattedUrl(val.url.split('/'));
@@ -21,7 +23,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.userName = this._authService.getCurrentUser().name;
   }
 
   private _mobileMenuOpen: boolean = false;
@@ -55,6 +57,10 @@ export class HeaderComponent implements OnInit {
   getFormattedUrl(urlArray: string[]): string {
     var finalUrl = urlArray[urlArray.length - 1];
     return finalUrl.split('?')[0];
+  }
+
+  logOut() {
+    this._authService.logOutUser();
   }
 }
 

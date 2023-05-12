@@ -47,10 +47,10 @@
                         <div class="row px-0">
                           <div class="d-flex menu col-12 px-0 row text-center justify-content-center">
                             <div class="col-auto">
-                              <a mat-button [matMenuTriggerFor]="dropdownUser" class="btn btn-default btn-xs btn-name link-btn px-0"><i class="fa fa-user-o mx-2" aria-hidden="true"></i>Usuario</a>
+                              <a mat-button [matMenuTriggerFor]="dropdownUser" class="btn btn-default btn-xs btn-name link-btn px-0"><i class="fa fa-user-o mx-2" aria-hidden="true"></i>Usuario: {{userName}}</a>
                               <mat-menu #dropdownUser="matMenu" xPosition="before" class="header-setting-dropdown">
                                 <a class="dropdown-item" routerLink="my-profile">Perfil</a>
-                                <a class="dropdown-item" routerLink="logout">Cerrar sesión</a>
+                                <a class="dropdown-item" routerLink="logout" (click)="logOut()">Cerrar sesión</a>
                               </mat-menu>
                             </div>
                           </div>

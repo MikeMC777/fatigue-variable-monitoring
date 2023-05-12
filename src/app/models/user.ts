@@ -1,4 +1,9 @@
 export interface UserI {
-  nombre: string,
+  id?: number,
+  _uuid?: string,
+  name: string,
+  surname: string,
+  nickname: string,
+  email: string
   password: string
 }

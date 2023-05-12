@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/operators';
 import { environment } from './../../environments/environment';
@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class CrudFileReadingService {
+export class CrudReportService {
 
   constructor(private httpClient: HttpClient, private authService: AuthService) { }
 
@@ -17,10 +17,11 @@ export class CrudFileReadingService {
     'x-access-token': this.authService.getToken() || ''
   });
 
-  loadFileReading(): Observable<any> {
-    const urlApi = `${environment.apiUrl}/api/plot-sent/get`;
+  loadReports(params: HttpParams): Observable<any> {
+    const urlApi = `${environment.apiUrl}/api/uploaded_file/employee/variable/get`;
     return this.httpClient
-    .get(urlApi, {headers: this.headers})
+    .get(urlApi, {params, headers: this.headers})
     .pipe(map(data => data));
   }
+
 }

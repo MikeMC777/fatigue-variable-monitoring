@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import Chart from 'chart.js';
+import { SocketWebService } from 'src/app/services/socket-web.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { ChangeService } from 'src/app/services/change.service';
+import { DataForLineChartI } from 'src/app/models/dataForLineChart';
 
 @Component({
   selector: 'fvm-line-chart',
@@ -8,41 +11,50 @@ import Chart from 'chart.js';
 })
 export class LineChartComponent implements OnInit {
 
-  public chart: any;
+  multi: DataForLineChartI [];
 
-  constructor() { }
+  //Opciones
+  legend: boolean = false;
+  animations: boolean = true;
+  xAxis: boolean = true;
+  yAxis: boolean = true;
+  showXAxisLabel: boolean = true;
+  showYAxisLabel: boolean = true;
+  xAxisLabel: string = 'Tiempo';
+  yAxisLabel: string = 'Valor';
+  timeline: boolean = true;
 
-  ngOnInit(): void {
-    this.createChart();
+  colorScheme = {
+    domain: []
+  }
+  @Input() data!: DataForLineChartI [];
+
+  subscription!: Subscription;
+
+
+  constructor(private changeService : ChangeService) {
+    this.multi = this.data;
+
   }
 
-  createChart(){
+  ngOnInit(): void {
+    this.subscription = this.changeService.change$.subscribe(() => this.multi = this.data);
 
-    this.chart = new Chart("MyChart", {
-      type: 'line', //this denotes tha type of chart
+  }
 
-      data: {// values on X-Axis
-        labels: ['2022-05-10', '2022-05-11', '2022-05-12','2022-05-13',
-								 '2022-05-14', '2022-05-15', '2022-05-16','2022-05-17', ],
-	       datasets: [
-          {
-            label: "Sales",
-            data: ['467','576', '572', '79', '92',
-								 '574', '573', '576'],
-            backgroundColor: 'blue'
-          },
-          {
-            label: "Profit",
-            data: ['542', '542', '536', '327', '17',
-									 '0.00', '538', '541'],
-            backgroundColor: 'limegreen'
-          }
-        ]
-      },
-      options: {
-        aspectRatio:2.5
-      }
+  ngOnDestroy(){
+    this.subscription.unsubscribe()
+ }
 
-    });
+  onSelect(event: any) {
+
+  }
+
+  onActivate(event: any) {
+
+  }
+
+  onDeactivate(event: any) {
+
   }
 }

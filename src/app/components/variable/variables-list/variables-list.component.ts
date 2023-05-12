@@ -28,6 +28,7 @@ export class VariablesListComponent implements OnInit, AfterViewInit {
   selection = new SelectionModel<VariableI>(true, []);
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  loaded = false;
 
   constructor(private _variableService: CrudVariableService,
     private _authService: AuthService, private _toastService: NgbToastService,
@@ -58,6 +59,7 @@ export class VariablesListComponent implements OnInit, AfterViewInit {
             }
           })
           this.dataSource = new MatTableDataSource<VariableI>(this.variablesList);
+          this.loaded = true;
         } else {
           this._authService.getErrorTable();
         }

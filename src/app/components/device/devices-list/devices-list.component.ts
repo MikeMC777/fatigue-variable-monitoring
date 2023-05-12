@@ -27,6 +27,7 @@ export class DevicesListComponent implements OnInit, AfterViewInit {
   selection = new SelectionModel<DeviceI>(true, []);
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  loaded = false;
 
   constructor(private _deviceService: CrudDeviceService,
     private _authService: AuthService, private _toastService: NgbToastService,
@@ -52,6 +53,7 @@ export class DevicesListComponent implements OnInit, AfterViewInit {
         if (data.success) {
           this.devicesList = data.result;
           this.dataSource = new MatTableDataSource<DeviceI>(this.devicesList);
+          this.loaded = true;
         } else {
           this._authService.getErrorTable();
         }

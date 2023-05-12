@@ -31,6 +31,15 @@
     </ng-container>
     <ng-container *ngIf="router.url === '/edit-template'; then templateEditBreadCrumb">
     </ng-container>
+    <!--Consulta de archivos-->
+    <ng-container *ngIf="router.url === '/file-reading'; then fileReadingBreadCrumb">
+    </ng-container>
+    <!--Reportes-->
+    <ng-container *ngIf="router.url === '/reports'; then reportBreadCrumb">
+    </ng-container>
+    <!--Mi perfil-->
+    <ng-container *ngIf="router.url === '/my-profile'; then myProfileBreadCrumb">
+    </ng-container>
   </div>
 
   <!--Formas de pago-->
@@ -259,6 +268,54 @@
           </li>
           <li class="breadcrumb-item active" aria-current="page">
               <strong>Nueva plantilla</strong>
+          </li>
+      </ol>
+  </div>
+</ng-template>
+
+<ng-template #fileReadingBreadCrumb>
+  <div class="col-12 col-md-6">
+      <h2 class="my-2">Consulta de archivo</h2>
+  </div>
+  <div class="col-12 col-md-6 align-self-center d-flex justify-content-md-end">
+      <ol class="breadcrumb my-auto">
+          <li class="breadcrumb-item">
+              <a routerLink="/">Home</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+              <strong>Consulta de archivo</strong>
+          </li>
+      </ol>
+  </div>
+</ng-template>
+
+<ng-template #reportBreadCrumb>
+  <div class="col-12 col-md-6">
+      <h2 class="my-2">Reportes</h2>
+  </div>
+  <div class="col-12 col-md-6 align-self-center d-flex justify-content-md-end">
+      <ol class="breadcrumb my-auto">
+          <li class="breadcrumb-item">
+              <a routerLink="/">Home</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+              <strong>Reportes</strong>
+          </li>
+      </ol>
+  </div>
+</ng-template>
+
+<ng-template #myProfileBreadCrumb>
+  <div class="col-12 col-md-6">
+      <h2 class="my-2">Mi perfil</h2>
+  </div>
+  <div class="col-12 col-md-6 align-self-center d-flex justify-content-md-end">
+      <ol class="breadcrumb my-auto">
+          <li class="breadcrumb-item">
+              <a routerLink="/">Home</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+              <strong>Datos de perfil</strong>
           </li>
       </ol>
   </div>

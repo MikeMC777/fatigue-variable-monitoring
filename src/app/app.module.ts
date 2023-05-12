@@ -9,6 +9,8 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxCaptchaModule } from 'ngx-captcha';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MatTableExporterModule } from 'mat-table-exporter';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { EmployeesListComponent } from './components/employee/employees-list/employees-list.component';
@@ -66,7 +68,9 @@ import { LineChartComponent } from './components/line-chart/line-chart.component
     ReactiveFormsModule,
     NgbModule,
     NgxCaptchaModule,
-    NgbToastModule
+    NgxChartsModule,
+    NgbToastModule,
+    MatTableExporterModule
   ],
   exports: [
     MaterialModule

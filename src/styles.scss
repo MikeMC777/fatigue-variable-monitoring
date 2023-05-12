@@ -1,9 +1,9 @@
 // Custom Theming for Angular Material
 @use '@angular/material' as mat;
 // For more information: https://material.angular.io/guide/theming
-@import "~bootstrap/scss/bootstrap";
+@import "./../node_modules/bootstrap/scss/bootstrap.scss";
 // Plus imports for other components in your app.
-@import "~font-awesome/scss/font-awesome";
+@import "./../node_modules/font-awesome/scss/font-awesome.scss";
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -48,5 +48,8 @@ html, body {
   }
   .button-container {
     text-align: end;
+  }
+  .bottom-space {
+    padding-bottom: 120px;
   }
 }

@@ -16,7 +16,7 @@ export class FileReadingComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
 
-    this._socketWebService.outEvent.subscribe(res => {
+    this._socketWebService.outInsertPlotEvent.subscribe(res => {
       this.query = 'Leyendo puerto serial...\n';
       this.getLastReadings();
     })
