@@ -13,3 +13,12 @@ div.all-page {
   z-index: 1000;
   top: 0;
 }
+
+.footer {
+  left: 0;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  z-index: 100;
+  width: 100%;
+}

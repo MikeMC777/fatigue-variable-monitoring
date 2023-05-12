@@ -6,6 +6,7 @@ export class CommonConstants {
   public static OBJECT_QUERY_ERROR_MESSAGE: string = 'Error al intentar consultar el objeto. Comuníquese con su administrador.';
   public static SUCCESSFUL_PROCESS_TITLE: string = 'Proceso exitoso';
   public static EMPLOYEE_MESSAGE: string = 'El(la) empleado(a) ';
+  public static USER_MESSAGE: string = 'El(la) usuario(a) ';
   public static VARIABLE_MESSAGE: string = 'La variable ';
   public static DEVICE_MESSAGE: string = 'El dispositivo ';
   public static TEMPLATE_MESSAGE: string = 'La plantilla ';

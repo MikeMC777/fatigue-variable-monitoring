@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserI } from 'src/app/models/user';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import * as CryptoJS from 'crypto-js';
 import { environment } from 'src/environments/environment';
@@ -21,16 +21,19 @@ export class LoginComponent implements OnInit {
   date: Date = new Date();
   currentYear: number = this.date.getFullYear();
   private user: UserI = {
-    nombre: '',
+    name: '',
+    surname: '',
+    nickname: '',
+    email: '',
     password: ''
   };
-  signUpForm!: FormGroup;
+  signUpForm!: UntypedFormGroup;
 
-  constructor(private _authService: AuthService, private router: Router, private builder: FormBuilder) {}
+  constructor(private _authService: AuthService, private router: Router, private builder: UntypedFormBuilder) {}
 
   ngOnInit() {
     this.signUpForm = this.builder.group({
-      name : ['', Validators.required],
+      nickname : ['', Validators.required],
       password : ['', Validators.required]
     });
     showHidePassword(this.passElementId);
@@ -47,13 +50,13 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(infoUser: any) {
-    this.user.nombre = infoUser.name;
+    this.user.nickname = infoUser.nickname;
     this.user.password = infoUser.password;
+    console.log('this.user55', this.user);
     const filterUser = CryptoJS.AES.encrypt(JSON.stringify(this.user), `${environment.secretkey}`).toString();
     return this._authService.loginUser(filterUser)
     .subscribe(data => {
       if (data.success) {
-        console.log('data56', data);
         this._authService.setUser(data.result);
         this._authService.setToken(data.token);
         Swal.fire({

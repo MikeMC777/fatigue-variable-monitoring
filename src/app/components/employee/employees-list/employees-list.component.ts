@@ -27,6 +27,7 @@ export class EmployeesListComponent implements OnInit, AfterViewInit {
   selection = new SelectionModel<EmployeeI>(true, []);
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  loaded = false;
 
   constructor(private _employeeService: CrudEmployeeService,
     private _authService: AuthService, private _toastService: NgbToastService,
@@ -52,6 +53,7 @@ export class EmployeesListComponent implements OnInit, AfterViewInit {
         if (data.success) {
           this.employeesList = data.result;
           this.dataSource = new MatTableDataSource<EmployeeI>(this.employeesList);
+          this.loaded = true;
         } else {
           this._authService.getErrorTable();
         }

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { AvailableDeviceI } from 'src/app/models/device';
 import { EmployeeDeviceI } from 'src/app/models/employee';
 
@@ -17,8 +17,8 @@ export class DeviceEmployeeItemComponent implements OnInit {
 
   @Output() remove: EventEmitter<string> = new EventEmitter<string>();
   @Output() add: EventEmitter<number> = new EventEmitter<number>();
-  deviceFormGroup = new FormGroup({
-    device: new FormControl('', [Validators.required])
+  deviceFormGroup = new UntypedFormGroup({
+    device: new UntypedFormControl('', [Validators.required])
   })
 
   constructor() { }

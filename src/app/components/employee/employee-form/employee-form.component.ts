@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { IdSenderService } from 'src/app/services/id-sender.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { UntypedFormGroup, Validators, UntypedFormControl } from '@angular/forms';
 import { EmployeeI } from 'src/app/models/employee';
 import { CrudEmployeeService } from 'src/app/services/crud-employee.service';
 import { HttpParams } from '@angular/common/http';
@@ -21,21 +21,21 @@ import * as moment from 'moment';
 })
 export class EmployeeFormComponent implements OnInit {
   maxDate: Date = new Date();
-  employeeFormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.maxLength(30)]),
-    second_name: new FormControl('', Validators.maxLength(30)),
-    surname: new FormControl('', [Validators.required, Validators.maxLength(30)]),
-    second_surname: new FormControl('', Validators.maxLength(30)),
-    document_type: new FormControl('CC', null),
-    document: new FormControl(null, Validators.required),
-    position: new FormControl('', Validators.maxLength(100)),
-    date_of_birth: new FormControl('', Validators.required),
-    address: new FormControl('', Validators.maxLength(200)),
-    phone: new FormControl('', Validators.maxLength(20)),
-    cellphone: new FormControl('', Validators.maxLength(20)),
-    email: new FormControl('@', [Validators.required, Validators.email, Validators.maxLength(100)]),
-    height: new FormControl(null, Validators.required),
-    weight: new FormControl(null, Validators.required)
+  employeeFormGroup = new UntypedFormGroup({
+    name: new UntypedFormControl('', [Validators.required, Validators.maxLength(30)]),
+    second_name: new UntypedFormControl('', Validators.maxLength(30)),
+    surname: new UntypedFormControl('', [Validators.required, Validators.maxLength(30)]),
+    second_surname: new UntypedFormControl('', Validators.maxLength(30)),
+    document_type: new UntypedFormControl('CC', null),
+    document: new UntypedFormControl(null, Validators.required),
+    position: new UntypedFormControl('', Validators.maxLength(100)),
+    date_of_birth: new UntypedFormControl('', Validators.required),
+    address: new UntypedFormControl('', Validators.maxLength(200)),
+    phone: new UntypedFormControl('', Validators.maxLength(20)),
+    cellphone: new UntypedFormControl('', Validators.maxLength(20)),
+    email: new UntypedFormControl('@', [Validators.required, Validators.email, Validators.maxLength(100)]),
+    height: new UntypedFormControl(null, Validators.required),
+    weight: new UntypedFormControl(null, Validators.required)
   });
   /* Elemento de empleado por defecto */
   employeeItem!: EmployeeI;

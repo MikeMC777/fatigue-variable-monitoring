@@ -2,7 +2,7 @@ import { AuthService } from './../../../services/auth.service';
 import { IdSenderService } from 'src/app/services/id-sender.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
+import { UntypedFormGroup, Validators, UntypedFormControl, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { VariableI, VariableRangeI } from 'src/app/models/variable';
 import { CrudVariableService } from 'src/app/services/crud-variable.service';
 import { HttpParams } from '@angular/common/http';
@@ -18,14 +18,14 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 })
 export class VariableFormComponent implements OnInit {
   maxDate: Date = new Date();
-  variableFormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.maxLength(60)]),
-    data_type: new FormControl('DEC', Validators.maxLength(3)),
-    measurement_unit: new FormControl('', Validators.maxLength(100)),
-    min_range: new FormControl(null, null),
-    max_range: new FormControl(null, null),
-    has_range_for_age: new FormControl(false, null),
-    status: new FormControl(true, null)
+  variableFormGroup = new UntypedFormGroup({
+    name: new UntypedFormControl('', [Validators.required, Validators.maxLength(60)]),
+    data_type: new UntypedFormControl('DEC', Validators.maxLength(3)),
+    measurement_unit: new UntypedFormControl('', Validators.maxLength(100)),
+    min_range: new UntypedFormControl(null, null),
+    max_range: new UntypedFormControl(null, null),
+    has_range_for_age: new UntypedFormControl(false, null),
+    status: new UntypedFormControl(true, null)
   }, {validators: this.hasValidRanges()});
   /* Elemento de variable por defecto */
   variableItem!: VariableI;
