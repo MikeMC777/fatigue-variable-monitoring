@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'fvm-header-mobile-menu',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderMobileMenuComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _authService: AuthService) { }
 
   ngOnInit(): void {
+  }
+
+  logOut() {
+    this._authService.logOutUser();
   }
 
 }
