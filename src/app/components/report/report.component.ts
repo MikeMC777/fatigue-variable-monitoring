@@ -160,7 +160,6 @@ export class ReportComponent implements OnInit {
   }
 
   getDataForLineChart(data: any[]): DataForLineChartI[] {
-    console.log('data161',data);
     let dataFormatted: DataForLineChartI[] = [];
     dataFormatted.push({name: 'Rango Mínimo', series: []});
     const selectedEmployee = this.employeeOptions.filter(employee=> {

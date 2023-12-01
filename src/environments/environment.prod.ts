@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://weblink.es:4000',
+  apiUrl: 'http://161.35.3.216:3000',
   secretkey: 'mZNwNeoa6A7bbbbb',
 };
