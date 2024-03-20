@@ -32,7 +32,7 @@ export class FileReadingComponent implements OnInit, AfterViewInit {
         if (data.success) {
           const plotSentArray: Array<PlotSentI> = data.result;
           plotSentArray.forEach(plotSentItem => {
-            this.query += plotSentItem.plot + ' - ' + new Date(plotSentItem.registered_at) + '\n';
+            this.query += plotSentItem.plot + ' - ' + new Date(plotSentItem.registered_at).toLocaleString() + '\n';
           });
         } else {
           this._authService.getErrorTable();

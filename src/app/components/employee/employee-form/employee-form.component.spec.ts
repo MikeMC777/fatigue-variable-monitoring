@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { EmployeeFormComponent } from './employee-form.component';
+import { NgbToastModule } from 'ngb-toast';
 
 describe('EmployeeFormComponent', () => {
   let component: EmployeeFormComponent;
@@ -8,6 +9,7 @@ describe('EmployeeFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgbToastModule],
       declarations: [ EmployeeFormComponent ]
     })
     .compileComponents();

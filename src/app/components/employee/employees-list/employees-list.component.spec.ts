@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { EmployeesListComponent } from './employees-list.component';
+import { NgbToastModule } from 'ngb-toast';
 
 describe('EmployeesListComponent', () => {
   let component: EmployeesListComponent;
@@ -8,6 +10,7 @@ describe('EmployeesListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgbToastModule],
       declarations: [ EmployeesListComponent ]
     })
     .compileComponents();
